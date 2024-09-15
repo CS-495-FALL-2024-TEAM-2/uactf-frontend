@@ -1,9 +1,5 @@
 import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import Provider from './provider';
 import './globals.css';
 
 export default function RootLayout({
@@ -11,14 +7,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
-
   return (
     <html lang="en">
       <body>
-        <QueryClientProvider client={queryClient}>
-          <ChakraProvider>{children}</ChakraProvider>
-        </QueryClientProvider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
