@@ -1,5 +1,5 @@
-import { Text } from "@chakra-ui/react";
+import Nav from "./components/navbar";
 
 export default function Page() {
-  return <Text>Hello World!</Text>;
+  return <Nav />;
 }

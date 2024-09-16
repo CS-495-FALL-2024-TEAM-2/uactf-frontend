@@ -5,6 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import theme from '../theme/theme';
 
 export default function Provider({
   children,
@@ -15,7 +16,7 @@ export default function Provider({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>{children}</ChakraProvider>
+      <ChakraProvider theme={theme}>{children}</ChakraProvider>
     </QueryClientProvider>
   );
 }
