@@ -1,8 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+const {nextui} = require("@nextui-org/theme");
+
 module.exports = {
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/components/(table|radio|pagination|dropdown).js",
   ],
   theme: {
     colors: {
@@ -15,5 +18,6 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [nextui()],
 }
