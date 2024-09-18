@@ -18,6 +18,7 @@ import {
   Center,
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import Link from 'next/link'
 
 export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -30,9 +31,11 @@ export default function Nav() {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={3}>
-              <Button size='sm' bg={useColorModeValue('bama_gray', 'black')} onClick={toggleColorMode}>
-                Challenges
-              </Button>
+              <Link href="/challenges">
+                <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
+                  Challenges
+                </Button>
+              </Link>
               <Button size='sm' bg={useColorModeValue('bama_gray', 'black')} onClick={toggleColorMode}>
                 Teams
               </Button>
