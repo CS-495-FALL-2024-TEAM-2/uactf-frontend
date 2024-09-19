@@ -18,8 +18,8 @@ import {
 } from "@nextui-org/dropdown";
 import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
-import { mockChallenges } from "./mockData/challengesData";
-import { challenges, columns } from "./interfaces/challenges";
+import { mockChallenges } from "../utils/mockData/challengesData";
+import { challenges, columns } from "../types/challenges.types";
 import Link from "next/link";
 
 const challengesData = mockChallenges;
