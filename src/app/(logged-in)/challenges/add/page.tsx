@@ -10,7 +10,7 @@ export default function Page() {
         <form className="w-full max-w-96">
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Name</Text>
-                <Input placeholder="Name of challenge"/>
+                <Input placeholder="Name of challenge" required/>
             </Box>
             
             <Box className="mb-6">
