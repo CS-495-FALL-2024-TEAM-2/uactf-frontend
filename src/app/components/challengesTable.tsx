@@ -20,6 +20,7 @@ import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "./mockData/challengesData";
 import { challenges, columns } from "./interfaces/challenges";
+import Link from "next/link";
 
 const challengesData = mockChallenges;
 
@@ -155,9 +156,11 @@ export default function App() {
             </Dropdown>
             {/* TODO: add a condition for if user does not access to edit challenges when auth is set up */}
             {true ?
-            <Button color="primary">
-              Add New Challenge
-            </Button>
+            <Link href="/challenges/add">
+              <Button color="primary">
+                Add New Challenge
+              </Button>
+            </Link>
             : ''}
           </div>
         </div>
