@@ -1,7 +1,6 @@
 import React from 'react';
-import Provider from '../provider';
+import Navbar from "../../components/Navbar";
 import '../globals.css';
-import Nav from "../components/navbar";
 
 
 export default function RootLayout({
@@ -11,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-        <Nav />
+        <Navbar />
         {children}
     </>
   );

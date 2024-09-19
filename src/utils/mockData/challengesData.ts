@@ -1,4 +1,4 @@
-import { challenges } from "../interfaces/challenges";
+import { challenges } from "../../types/challenges.types";
 
 
 export const mockChallenges: challenges[] = [

@@ -21,7 +21,7 @@ import {
 import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 
-export default function Nav() {
+export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -64,7 +64,7 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
     <>
       <Box bg={useColorModeValue('bama_gray', 'black')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          
+
           <Box>
             <Text className='md:hidden' as='b' color='UA_red'>UACTF</Text>
             <Text className='hidden md:block' as='b' color='UA_red'>UA Capture The Flag</Text>
@@ -94,7 +94,7 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
               </MenuList>
             </Menu>
           </Box>
-          
+
 
           <Box className='hidden md:block'>
             <Flex alignItems={'center'}>
