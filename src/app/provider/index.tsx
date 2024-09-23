@@ -5,7 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import theme from '../theme/theme';
+import theme from '../../utils/theme/theme';
 
 export default function Provider({
   children,
