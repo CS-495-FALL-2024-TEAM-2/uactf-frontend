@@ -21,6 +21,7 @@ import { mockChallenges } from "../utils/mockData/challengesData";
 import { challenges, columns } from "../types/challenges.types";
 import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
+import { useRouter } from "next/navigation";
 
 const challengesData = mockChallenges;
 
@@ -35,6 +36,7 @@ export default function App() {
     direction: "ascending",
   });
   const screenSize = useScreenSize();
+  const router = useRouter();
 
   visibleColumns = screenSize.width < 620 ? ["name", "category", "points"] : ["name", "category", "description", "points"];
 
@@ -219,7 +221,7 @@ export default function App() {
         topContentPlacement="outside"
         onSortChange={setSortDescriptor}
         selectionMode="single" 
-        onSelectionChange={(selected) => {console.log(`selected id: ${new Set(selected).values().next().value}`)}}
+        onSelectionChange={(selected) => router.push(`/challenges/view/${new Set(selected).values().next().value}`)}
         >
         <TableHeader columns={headerColumns}>
             {(column) => (
