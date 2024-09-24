@@ -13,7 +13,7 @@ export const columns = [
     {name: "NAME", uid: "name", sortable: true},
     {name: "CATEGORY", uid: "category", sortable: true},
     {name: "DESCRIPTION", uid: "description"},
-    {name: "FLAG", uid: "flag", sortable: true},
+    {name: "FLAG", uid: "flag"},
     {name: "POINTS", uid: "points", sortable: true},
     {name: "HINT", uid: "hint"},
 ]
