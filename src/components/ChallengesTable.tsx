@@ -7,7 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Selection,
   SortDescriptor
 } from "@nextui-org/table";
 import {
@@ -20,20 +19,23 @@ import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "../utils/mockData/challengesData";
 import { challenges, columns } from "../types/challenges.types";
+import useScreenSize from "@/utils/getScreenSize";
 
 const challengesData = mockChallenges;
 
 //set visible columns, for hiding IDs, sensistive info
-const visibleColumns = ["name", "category", "description", "points"];
+let visibleColumns: string[] = ["name", "category", "points"];
 
 export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
     direction: "ascending",
   });
+  const screenSize = useScreenSize();
+
+  visibleColumns = screenSize.width < 620 ? ["name", "category", "points"] : ["name", "category", "description", "points"];
 
   const [page, setPage] = React.useState(1);
 
@@ -94,7 +96,7 @@ export default function App() {
         );
       case "description":
         return (
-          <div className="truncate max-w-xs md:max-w-md lg:max-w-lg">
+          <div className="truncate max-w-xs md:max-w-md lg:max-w-xl">
             {challengesData.description}
           </div>
         );
@@ -136,7 +138,7 @@ export default function App() {
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button variant="flat">
+                <Button variant="flat" className="z-0">
                   Status
                 </Button>
               </DropdownTrigger>
@@ -163,7 +165,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">Total {challengesData.length} challenges</span>
-          <label className="flex items-center text-default-400 text-small text-nowrap">
+          <label className="flex items-center gap-2 text-default-400 text-small text-nowrap">
             Rows per page:
             <Select
               size={'sm'}
@@ -188,12 +190,7 @@ export default function App() {
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span>
+      <div className="flex w-full items-center justify-center">
         <Pagination
           isCompact
           showControls
@@ -205,7 +202,7 @@ export default function App() {
         />
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [items.length, page, pages, hasSearchFilter]);
 
   return (
     <div className="p-4">
@@ -214,13 +211,12 @@ export default function App() {
         isHeaderSticky
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
-        selectedKeys={selectedKeys}
-        selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         topContent={topContent}
         topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
         onSortChange={setSortDescriptor}
+        selectionMode="single" 
+        onSelectionChange={(selected) => {console.log(`selected id: ${new Set(selected).values().next().value}`)}}
         >
         <TableHeader columns={headerColumns}>
             {(column) => (
