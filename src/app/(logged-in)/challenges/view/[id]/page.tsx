@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <SameLineInfoDisplay heading="Category" data={challengeData.category} />
             <SameLineInfoDisplay heading="Points" data={challengeData.points.toString()} />
             <SameLineInfoDisplay heading="Division" data={challengeData.division.join(", ")} />
-            <TableInfoDisplay heading="Hints" thead={["", "Cost"]} data={challengeData.hints.map((hint: Hint) => [hint.value, hint.cost])} />
+            <TableInfoDisplay heading="Hints" thead={["", "Cost"]} data={challengeData.hints.map((hint: Hint) => [hint.hint, hint.point_cost])} />
             <SameLineInfoDisplay heading="Flag" data={challengeData.flag} />
             <SameLineInfoDisplay heading="Flag Case Sensitivity" data={challengeData.is_flag_case_sensitive ? "Sensitive" : "Insensitive"} />
             <NextLineInfoDisplay heading="Solution Explanation" data={challengeData.solution_explanation ? challengeData.solution_explanation : ''} />
