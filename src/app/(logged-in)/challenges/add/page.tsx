@@ -1,39 +1,25 @@
 "use client"
 
+import { challenges } from "@/types/challenges.types";
 import { Stack, Heading, Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button } from "@chakra-ui/react";
 import * as React from "react";
 import { useState } from "react";
 
 
 export default function Page() {
-
-  type Hint = {
-    value: string,
-    cost: number
-  };
-  type CreateChallengeFormData = {
-    name: string;
-    description: string;
-    flag_format: string;
-    division: string;
-    points: number;
-    category: string;
-    solution: string;
-    hints: Hint[];
-    file_attachment: File | null;
-  };
-  const [formData, setFormData] = useState<CreateChallengeFormData>({
-    name: '',
-    description: '',
-    flag_format: '',
-    division: '',
+  const [formData, setFormData] = useState<challenges>({
+    challenge_id: "0",
+    challenge_name: '',
+    challenge_description: '',
+    flag: '',
+    division: [],
     points: 100,
     category: '',
-    solution: '',
     hints: [],
-    file_attachment: null
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   });
-
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> = (e) => {
     const {name, value} = e.target;
@@ -48,25 +34,30 @@ export default function Page() {
         <form className="w-full max-w-96">
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Name</Text>
-                <Input placeholder="Name of challenge" name="name" value={formData.name} onChange={handleInputChange} required/>
+                <Input placeholder="Name of challenge" name="name" value={formData.challenge_name} onChange={handleInputChange} required/>
             </Box>
             
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Description</Text>
-                <Textarea placeholder="Description of challenge" name="description" value={formData.description} onChange={handleInputChange}/>
+                <Textarea placeholder="Description of challenge" name="description" value={formData.challenge_description} onChange={handleInputChange}/>
             </Box>
 
             <Box className="mb-6">
-                <Text className="mb-2" as="b">Flag format</Text>
-                <Input name="flag_format" value={formData.flag_format} onChange={handleInputChange}/>
+                <Text className="mb-2" as="b">Flag</Text>
+                <Input name="flag_format" value={formData.flag} onChange={handleInputChange}/>
             </Box>
 
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Division</Text>
-                <Select placeholder='Select division' name="division" value={formData.division} onChange={handleInputChange}>
-                    <option value='option1'>Both</option>
-                    <option value='option2'>Division 1</option>
-                    <option value='option3'>Division 2</option>
+                <Select placeholder='Select division' value={formData.division.map(String)} onChange={(e) => {
+                                    setFormData({
+                                        ...formData,
+                                        division: e.target.value.split(",").map(Number),
+                                    });
+                }}>
+                    <option value="1,2">Both</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
                 </Select>
             </Box>
 
@@ -89,11 +80,6 @@ export default function Page() {
                     <option value='option1'>Category 1</option>
                     <option value='option2'>Category 2</option>
                 </Select>
-            </Box>
-
-            <Box className="mb-6">
-                <Text className="mb-2" as="b">Solution (optional)</Text>
-                <Textarea placeholder="Solution to challenge" name="solution" value={formData.solution} onChange={handleInputChange}/>
             </Box>
 
             <Box className="mb-12">

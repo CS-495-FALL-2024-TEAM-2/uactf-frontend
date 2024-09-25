@@ -1,11 +1,29 @@
+export type Hint = {
+    value: string,
+    cost: number
+};
+
 export type challenges = {
-    id: number;
-    name: string,
+    challenge_id: string;
+    challenge_name: string,
     category: string,
-    description: string,
+    challenge_description: string,
     flag: string,
+    is_flag_case_sensitive: boolean,
     points: number,
-    hint: string
+    division: number[],
+    hints: Hint[],
+    solution_explanation: string | null,
+    file_attachment: File | null,
+}
+
+export type listChallenges = {
+    challenge_id: string;
+    challenge_name: string,
+    category: string,
+    challenge_description: string,
+    points: number,
+    division: number[],
 }
 
 export const columns = [
@@ -13,7 +31,5 @@ export const columns = [
     {name: "NAME", uid: "name", sortable: true},
     {name: "CATEGORY", uid: "category", sortable: true},
     {name: "DESCRIPTION", uid: "description"},
-    {name: "FLAG", uid: "flag"},
     {name: "POINTS", uid: "points", sortable: true},
-    {name: "HINT", uid: "hint"},
 ]

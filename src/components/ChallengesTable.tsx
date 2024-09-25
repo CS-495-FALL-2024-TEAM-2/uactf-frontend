@@ -18,12 +18,19 @@ import {
 import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "../utils/mockData/challengesData";
-import { challenges, columns } from "../types/challenges.types";
+import { challenges, columns, listChallenges } from "../types/challenges.types";
 import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
 import { useRouter } from "next/navigation";
 
-const challengesData = mockChallenges;
+const challengesData: listChallenges[] = mockChallenges.map((challenge) => ({
+  "challenge_id": challenge.challenge_id,
+  "challenge_name": challenge.challenge_name,
+  "category": challenge.category,
+  "challenge_description": challenge.challenge_description,
+  "points": challenge.points,
+  "division" :challenge.division,
+}));
 
 //set visible columns, for hiding IDs, sensistive info
 let visibleColumns: string[] = ["name", "category", "points"];
@@ -53,9 +60,9 @@ export default function App() {
 
     if (hasSearchFilter) {
         filteredChallenges = filteredChallenges.filter((challenge) =>
-            challenge.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+            challenge.challenge_name.toLowerCase().includes(filterValue.toLowerCase()) ||
             challenge.category.toLowerCase().includes(filterValue.toLowerCase()) ||
-            challenge.description.toLowerCase().includes(filterValue.toLowerCase())
+            challenge.challenge_description.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -72,23 +79,23 @@ export default function App() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: challenges, b: challenges) => {
-      const first = a[sortDescriptor.column as keyof challenges] as number;
-      const second = b[sortDescriptor.column as keyof challenges] as number;
+    return [...items].sort((a: listChallenges, b: listChallenges) => {
+      const first = a[sortDescriptor.column as keyof listChallenges] as number;
+      const second = b[sortDescriptor.column as keyof listChallenges] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((challengesData: challenges, columnKey: React.Key) => {
-    const cellValue = challengesData[columnKey as keyof challenges];
+  const renderCell = React.useCallback((challengesData: listChallenges, columnKey: React.Key) => {
+    const cellValue = challengesData[columnKey as keyof listChallenges];
 
     switch (columnKey) {
       case "name":
         return (
           <div>
-            {challengesData.name}
+            {challengesData.challenge_name}
           </div>
         );
       case "category":
@@ -100,7 +107,7 @@ export default function App() {
       case "description":
         return (
           <div className="truncate max-w-xs md:max-w-md lg:max-w-xl">
-            {challengesData.description}
+            {challengesData.challenge_description}
           </div>
         );
       case "points":
@@ -236,7 +243,7 @@ export default function App() {
         </TableHeader>
         <TableBody emptyContent={"No challenges found"} items={sortedItems}>
             {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.challenge_id}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
             </TableRow>
             )}

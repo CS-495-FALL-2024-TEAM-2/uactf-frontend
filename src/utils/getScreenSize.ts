@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 
+// FIXME: this has hydration issue :[
+//   (╯︵╰)
+// i'm fine
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: typeof window !== 'undefined' ? window.innerWidth : 700,
+    height: typeof window !== 'undefined' ? window.innerWidth : 700,
   });
 
   useEffect(() => {
