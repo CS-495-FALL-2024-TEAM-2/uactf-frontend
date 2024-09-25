@@ -19,12 +19,16 @@ import {
 import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "../utils/mockData/challengesData";
+<<<<<<< HEAD
 import { columns, listChallenges } from "../types/challenges.types";
+=======
+import { columns, ListChallenges } from "../types/challenges.types";
+>>>>>>> 15f736a (16:)
 import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
 import { useRouter } from "next/navigation";
 
-const challengesData: listChallenges[] = mockChallenges.map((challenge) => ({
+const challengesData: ListChallenges[] = mockChallenges.map((challenge) => ({
   "challenge_id": challenge.challenge_id,
   "challenge_name": challenge.challenge_name,
   "category": challenge.category,
@@ -86,17 +90,17 @@ export default function App() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: listChallenges, b: listChallenges) => {
-      const first = a[sortDescriptor.column as keyof listChallenges] as number;
-      const second = b[sortDescriptor.column as keyof listChallenges] as number;
+    return [...items].sort((a: ListChallenges, b: ListChallenges) => {
+      const first = a[sortDescriptor.column as keyof ListChallenges] as number;
+      const second = b[sortDescriptor.column as keyof ListChallenges] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((challengesData: listChallenges, columnKey: React.Key) => {
-    const cellValue = challengesData[columnKey as keyof listChallenges];
+  const renderCell = React.useCallback((challengesData: ListChallenges, columnKey: React.Key) => {
+    const cellValue = challengesData[columnKey as keyof ListChallenges];
 
     switch (columnKey) {
       case "name":
@@ -238,7 +242,7 @@ export default function App() {
         topContentPlacement="outside"
         onSortChange={setSortDescriptor}
         selectionMode="single" 
-        onSelectionChange={(selected) => router.push(`/challenges/view/${new Set(selected).values().next().value}`)}
+        onSelectionChange={(selected) => selected != undefined ? router.push(`/challenges/view/${new Set(selected).values().next().value}`) : ''}
         >
         <TableHeader columns={headerColumns}>
             {(column) => (
