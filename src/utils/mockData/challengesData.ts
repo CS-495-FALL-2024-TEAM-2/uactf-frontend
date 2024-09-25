@@ -1,59 +1,104 @@
-import { challenges } from "../../types/challenges.types";
+import { Challenges } from "../../types/challenges.types";
 
 
-export const mockChallenges: challenges[] = [
+export const mockChallenges: Challenges[] = [
   {
-    id: 1908,
-    name: "Go Team!",
+    challenge_id: "1908",
+    challenge_name: "Go Team!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help",
+      cost: 900
+    }],
+    division: [1, 2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
   {
-    id: 2320,
-    name: "Go Team 2!",
+    challenge_id: "2320",
+    challenge_name: "Go Team 2!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help",
+      cost: 700
+    }],
+    division: [2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
   {
-    id: 3493,
-    name: "Go Team 3!",
+    challenge_id: "3493",
+    challenge_name: "Go Team 3!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help",
+      cost: 600
+    }],
+    division: [1,2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
   {
-    id: 4191,
-    name: "Go Team 4!",
+    challenge_id: "4191",
+    challenge_name: "Go Team 4!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help dnsionsivosxnjsejd",
+      cost: 900
+    },{
+      value: "My friend Caesar says he can help",
+      cost: 90
+    }],
+    division: [1,2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
   {
-    id: 5048,
-    name: "Go Team 5!",
+    challenge_id: "5048",
+    challenge_name: "Go Team 5!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help",
+      cost: 300
+    }],
+    division: [1, 2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
   {
-    id: 6438,
-    name: "Go Team 6!",
+    challenge_id: "6438",
+    challenge_name: "Go Team 6!",
     category: "Cryptography",
-    description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
+    challenge_description: "Big Al needs help cheering on the team, but he's sounding strange. Can you figure out what he's trying to say? Yvss Apkl",
     flag: "flag",
     points: 100,
-    hint: "My friend Caesar says he can help",
+    hints: [{
+      value: "My friend Caesar says he can help",
+      cost: 90
+    }],
+    division: [2],
+    file_attachment: null,
+    is_flag_case_sensitive: false,
+    solution_explanation: null
   },
 ]
