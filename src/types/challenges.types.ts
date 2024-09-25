@@ -3,7 +3,7 @@ export type Hint = {
     cost: number
 };
 
-export type challenges = {
+export type Challenges = {
     challenge_id: string;
     challenge_name: string,
     category: string,
@@ -17,7 +17,7 @@ export type challenges = {
     file_attachment: File | null,
 }
 
-export type listChallenges = {
+export type ListChallenges = {
     challenge_id: string;
     challenge_name: string,
     category: string,

@@ -1,13 +1,13 @@
 "use client"
 
-import { challenges } from "@/types/challenges.types";
+import { Challenges } from "@/types/challenges.types";
 import { Stack, Heading, Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button } from "@chakra-ui/react";
 import * as React from "react";
 import { useState } from "react";
 
 
 export default function Page() {
-  const [formData, setFormData] = useState<challenges>({
+  const [formData, setFormData] = useState<Challenges>({
     challenge_id: "0",
     challenge_name: '',
     challenge_description: '',
