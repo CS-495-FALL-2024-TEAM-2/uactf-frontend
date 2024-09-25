@@ -1,7 +1,7 @@
-import { challenges } from "../../types/challenges.types";
+import { Challenges } from "../../types/challenges.types";
 
 
-export const mockChallenges: challenges[] = [
+export const mockChallenges: Challenges[] = [
   {
     challenge_id: "1908",
     challenge_name: "Go Team!",

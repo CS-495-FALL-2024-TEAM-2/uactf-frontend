@@ -5,13 +5,11 @@ export default function Page() {
   return (
     <Box
       bg="gray.100"
-      minHeight="100vh"
-      minWidth="100vw"
-      maxWidth="100vw"
       display="flex"
       justifyContent="center"
       alignItems="center"
-      padding="1"
+      flexGrow={1}
+      padding={1}
     >
       <Box
         className="w-full md:w-80"
