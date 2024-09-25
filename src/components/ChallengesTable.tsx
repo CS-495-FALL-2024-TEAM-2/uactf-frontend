@@ -7,18 +7,19 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  SortDescriptor
+  SortDescriptor,
+  Selection
 } from "@nextui-org/table";
 import {
     DropdownTrigger,
     Dropdown,
     DropdownMenu,
-    DropdownItem
+    DropdownItem,
 } from "@nextui-org/dropdown";
 import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "../utils/mockData/challengesData";
-import { challenges, columns, listChallenges } from "../types/challenges.types";
+import { columns, listChallenges } from "../types/challenges.types";
 import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
 import { useRouter } from "next/navigation";
@@ -34,10 +35,12 @@ const challengesData: listChallenges[] = mockChallenges.map((challenge) => ({
 
 //set visible columns, for hiding IDs, sensistive info
 let visibleColumns: string[] = ["name", "category", "points"];
+const divisionOptions = [1,2]
 
 export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [divisionFilter, setDivisionFilter] = React.useState<Selection>("all");
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
     direction: "ascending",
@@ -65,9 +68,13 @@ export default function App() {
             challenge.challenge_description.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-
+    if (divisionFilter !== "all" && Array.from(divisionFilter).length !== divisionOptions.length) {
+      filteredChallenges = filteredChallenges.filter((challenge) =>
+        challenge.division.some(div => Array.from(divisionFilter).includes(div.toString()))
+      );
+    }
     return filteredChallenges;
-  }, [challengesData, filterValue]);
+  }, [challengesData, filterValue, divisionFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -149,18 +156,20 @@ export default function App() {
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button variant="flat" className="z-0">
-                  Status
+                  Division
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
                 aria-label="Table Columns"
                 closeOnSelect={false}
+                selectedKeys={divisionFilter}
                 selectionMode="multiple"
+                onSelectionChange={setDivisionFilter}
               >
-                {[1, 2].map((status) => (
-                  <DropdownItem key={status} className="capitalize">
-                    {status}
+                {divisionOptions.map((division) => (
+                  <DropdownItem key={division} textValue={division.toString()} className="capitalize">
+                    {division}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -193,6 +202,7 @@ export default function App() {
     );
   }, [
     filterValue,
+    divisionFilter,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,

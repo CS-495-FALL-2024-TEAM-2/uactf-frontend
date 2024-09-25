@@ -13,7 +13,7 @@ export const mockChallenges: challenges[] = [
       value: "My friend Caesar says he can help",
       cost: 900
     }],
-    division: [1, 2],
+    division: [1],
     file_attachment: null,
     is_flag_case_sensitive: false,
     solution_explanation: null
@@ -45,7 +45,7 @@ export const mockChallenges: challenges[] = [
       value: "My friend Caesar says he can help",
       cost: 600
     }],
-    division: [1,2],
+    division: [1],
     file_attachment: null,
     is_flag_case_sensitive: false,
     solution_explanation: null
@@ -64,7 +64,7 @@ export const mockChallenges: challenges[] = [
       value: "My friend Caesar says he can help",
       cost: 90
     }],
-    division: [1,2],
+    division: [2],
     file_attachment: null,
     is_flag_case_sensitive: false,
     solution_explanation: null
