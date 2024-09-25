@@ -19,11 +19,7 @@ import {
 import {Pagination} from "@nextui-org/pagination"
 import { Button, Input, Select } from "@chakra-ui/react";
 import { mockChallenges } from "../utils/mockData/challengesData";
-<<<<<<< HEAD
-import { columns, listChallenges } from "../types/challenges.types";
-=======
 import { columns, ListChallenges } from "../types/challenges.types";
->>>>>>> 15f736a (16:)
 import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
 import { useRouter } from "next/navigation";

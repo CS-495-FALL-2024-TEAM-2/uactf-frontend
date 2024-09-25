@@ -1,15 +1,12 @@
 "use client"
 
-import { Stack, Heading, Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { CreateChallengeRequest, Hint } from "@/types/challenges.types";
+import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import * as React from "react";
 import { useState } from "react";
 
 export default function AddChallengeForm(){
-    type Hint = {
-        hint: string,
-        point_cost: number
-    };
     type CreateChallengeFormData = {
         challenge_name: string;
         points: number;
@@ -18,21 +15,6 @@ export default function AddChallengeForm(){
         is_flag_case_sensitive: boolean;
         division: string;
         challenge_category: string;
-        solution_explanation: string;
-        hints: Hint[];
-        // file_attachment: File | null;
-    };
-
-    type CreateChallengeRequest = {
-        challenge_name: string;
-        points: number;
-        creator_name: string;
-        division: number[];
-        challenge_description: string;
-        flag: string;
-        is_flag_case_sensitive: boolean;
-        challenge_category: string;
-        verified: boolean;
         solution_explanation: string;
         hints: Hint[];
         // file_attachment: File | null;
@@ -51,13 +33,15 @@ export default function AddChallengeForm(){
         // file_attachment: null
     };
 
-
+    // hooks
     const [formData, setFormData] = useState<CreateChallengeFormData>(defaultFormValues);
 
     const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
 
     const toast = useToast();
 
+
+    // functions
     const setErrorMessage = (errorMessage: string) => {
         setFormErrorAlert(errorMessage);
         window.scrollTo({
@@ -122,7 +106,7 @@ export default function AddChallengeForm(){
         return await response.json();
     };
 
-
+    // mutation
     const createChallengeMutation = useMutation({
         mutationFn: createChallenge,
         onSuccess: (data) => {
@@ -300,10 +284,6 @@ export default function AddChallengeForm(){
             </Box>
 
             <Button type="submit" className="w-full" colorScheme="blue" isLoading={createChallengeMutation.isPending}>Add Challenge</Button>
-
-
-
-            
         </form>
     );
 }
