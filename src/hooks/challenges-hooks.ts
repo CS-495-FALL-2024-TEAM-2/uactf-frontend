@@ -7,7 +7,7 @@ export const useCreateChallenge = (
     onSuccessFn?: ((data: any, variables: CreateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined,
     onErrorFn?: ((error: Error, variables: CreateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined
 ): {
-    mutation: UseMutateFunction<any, Error, CreateChallengeRequest, unknown>,
+    mutate: UseMutateFunction<any, Error, CreateChallengeRequest, unknown>,
     isPending: boolean;
 } => {
     const createChallenge = async (request_body: CreateChallengeRequest) => {
@@ -33,5 +33,5 @@ export const useCreateChallenge = (
         onError: onErrorFn,
     });
 
-    return {mutation: createChallengeMutation.mutate, isPending: createChallengeMutation.isPending};
+    return {mutate: createChallengeMutation.mutate, isPending: createChallengeMutation.isPending};
 }

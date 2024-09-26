@@ -28,7 +28,7 @@ export default function AddChallengeForm(){
 
     const toast = useToast();
 
-    const {mutation: createChallenge, isPending: createChallengeIsPending} = useCreateChallenge(
+    const {mutate: createChallenge, isPending: createChallengeIsPending} = useCreateChallenge(
         (data) => {
             setFormErrorAlert(null);
             setFormData(defaultFormValues);
