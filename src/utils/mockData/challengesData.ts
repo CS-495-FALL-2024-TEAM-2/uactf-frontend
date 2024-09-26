@@ -10,8 +10,8 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help",
-      point_cost: 900
+      value: "My friend Caesar says he can help",
+      cost: 900
     }],
     division: [1],
     file_attachment: null,
@@ -26,8 +26,8 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help",
-      point_cost: 700
+      value: "My friend Caesar says he can help",
+      cost: 700
     }],
     division: [2],
     file_attachment: null,
@@ -42,8 +42,8 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help",
-      point_cost: 600
+      value: "My friend Caesar says he can help",
+      cost: 600
     }],
     division: [1],
     file_attachment: null,
@@ -58,11 +58,11 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help dnsionsivosxnjsejd",
-      point_cost: 900
+      value: "My friend Caesar says he can help dnsionsivosxnjsejd",
+      cost: 900
     },{
-      hint: "My friend Caesar says he can help",
-      point_cost: 90
+      value: "My friend Caesar says he can help",
+      cost: 90
     }],
     division: [2],
     file_attachment: null,
@@ -77,8 +77,8 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help",
-      point_cost: 300
+      value: "My friend Caesar says he can help",
+      cost: 300
     }],
     division: [1, 2],
     file_attachment: null,
@@ -93,8 +93,8 @@ export const mockChallenges: Challenges[] = [
     flag: "flag",
     points: 100,
     hints: [{
-      hint: "My friend Caesar says he can help",
-      point_cost: 90
+      value: "My friend Caesar says he can help",
+      cost: 90
     }],
     division: [2],
     file_attachment: null,

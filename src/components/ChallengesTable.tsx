@@ -24,11 +24,20 @@ import Link from "next/link";
 import useScreenSize from "@/utils/getScreenSize";
 import { useRouter } from "next/navigation";
 
+const challengesData: ListChallenges[] = mockChallenges.map((challenge) => ({
+  "challenge_id": challenge.challenge_id,
+  "challenge_name": challenge.challenge_name,
+  "category": challenge.category,
+  "challenge_description": challenge.challenge_description,
+  "points": challenge.points,
+  "division" :challenge.division,
+}));
+
 //set visible columns, for hiding IDs, sensistive info
 let visibleColumns: string[] = ["name", "category", "points"];
 const divisionOptions = [1,2]
 
-export default function App({challengesData}: {challengesData: ListChallenges[]}) {
+export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [divisionFilter, setDivisionFilter] = React.useState<Selection>("all");
@@ -54,9 +63,9 @@ export default function App({challengesData}: {challengesData: ListChallenges[]}
 
     if (hasSearchFilter) {
         filteredChallenges = filteredChallenges.filter((challenge) =>
-            challenge.challenge_name?.toLowerCase().includes(filterValue.toLowerCase()) ||
-            challenge.category?.toLowerCase().includes(filterValue.toLowerCase()) ||
-            challenge.challenge_description?.toLowerCase().includes(filterValue.toLowerCase())
+            challenge.challenge_name.toLowerCase().includes(filterValue.toLowerCase()) ||
+            challenge.category.toLowerCase().includes(filterValue.toLowerCase()) ||
+            challenge.challenge_description.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (divisionFilter !== "all" && Array.from(divisionFilter).length !== divisionOptions.length) {
