@@ -4,6 +4,7 @@ import SameLineInfoDisplay from "@/components/SameLineInfoDisplay";
 import TableInfoDisplay from "@/components/TableInfoDisplay";
 import { Challenges, Hint } from "@/types/challenges.types";
 import { BASE_API_URI } from "@/utils/constants";
+import { fetchData } from "@/utils/fetchData";
 import { Heading, Stack } from "@chakra-ui/react";
 import React from "react";
 
@@ -25,25 +26,22 @@ export default function Page({ params }: { params: { id: string } }) {
     const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
-        const fetchData = async () => {
-            const endpoint = `/challenges/details?challenge_id=${params.id}`
-            try {
-                const response = await fetch(`${BASE_API_URI}${endpoint}`);
-                if (!response.ok) {
-                throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
-                console.log(result.challenge)
-                setData(result.challenge);
-            } catch (err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+        const endpoint = `${BASE_API_URI}/challenges/details?challenge_id=${params.id}`;
+        
+        const fetchAndSetData = async () => {
+          setLoading(true);
+          try {
+            const fetchedData = await fetchData(endpoint);
+            setData(fetchedData.challenge);
+          } catch (err: any) {
+            setError(err.message); // Handle error
+          } finally {
+            setLoading(false);
+          }
         };
-
-        fetchData();
-    }, []);
+    
+        fetchAndSetData();
+      }, [])
 
     if (loading) return <div className="flex justify-center items-center h-100 text-bold">Loading...</div>;
     if (error) return <div className="flex justify-center items-center h-100 text-bold">Error: {error}</div>;
