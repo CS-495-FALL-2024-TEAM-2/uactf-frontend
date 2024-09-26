@@ -1,25 +1,13 @@
 "use client"
 
-import { CreateChallengeRequest, Hint } from "@/types/challenges.types";
+import { useCreateChallenge } from "@/hooks/challenges-hooks";
+import { CreateChallengeFormData, CreateChallengeRequest, Hint } from "@/types/challenges.types";
 import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import * as React from "react";
 import { useState } from "react";
 
 export default function AddChallengeForm(){
-    type CreateChallengeFormData = {
-        challenge_name: string;
-        points: number;
-        challenge_description: string;
-        flag: string;
-        is_flag_case_sensitive: boolean;
-        division: string;
-        challenge_category: string;
-        solution_explanation: string;
-        hints: Hint[];
-        // file_attachment: File | null;
-    };
-
     const defaultFormValues: CreateChallengeFormData = {
         challenge_name: '',
         challenge_description: '',
@@ -39,6 +27,22 @@ export default function AddChallengeForm(){
     const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
 
     const toast = useToast();
+
+    const {mutation: createChallenge, isPending: createChallengeIsPending} = useCreateChallenge(
+        (data) => {
+            setFormErrorAlert(null);
+            setFormData(defaultFormValues);
+            toast({
+                title: 'Challenge created.',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+        },
+        (error) => {
+            setErrorMessage(error.message);
+        }
+    );
 
 
     // functions
@@ -87,44 +91,9 @@ export default function AddChallengeForm(){
             verified: false // TODO: this will automatically be true for super-admins and false for ua cd members
         }
         
-        createChallengeMutation.mutate(request_body);
+        createChallenge(request_body);
     }
 
-    const createChallenge = async (request_body: CreateChallengeRequest) => {
-        console.log(JSON.stringify(request_body))
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/create`, 
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request_body),
-            }
-        );
-
-        return await response.json();
-    };
-
-    // mutation
-    const createChallengeMutation = useMutation({
-        mutationFn: createChallenge,
-        onSuccess: (data) => {
-            console.log('data:',data);
-            setFormErrorAlert(null);
-            setFormData(defaultFormValues);
-            toast({
-                title: 'Challenge created.',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-            });
-        },
-        onError: (error) => {
-            console.log('error:' ,error);
-            setErrorMessage(error.message);
-        },
-    });
 
     return (
         <form className="w-full max-w-96" onSubmit={addChallengeEventHandler} noValidate>
@@ -283,7 +252,7 @@ export default function AddChallengeForm(){
                 />
             </Box>
 
-            <Button type="submit" className="w-full" colorScheme="blue" isLoading={createChallengeMutation.isPending}>Add Challenge</Button>
+            <Button type="submit" className="w-full" colorScheme="blue" isLoading={createChallengeIsPending}>Add Challenge</Button>
         </form>
     );
 }
