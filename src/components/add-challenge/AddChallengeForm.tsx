@@ -1,6 +1,6 @@
 "use client"
 
-import { useCreateChallenge } from "@/hooks/challenges-hooks";
+import { useCreateChallenge } from "@/hooks/challenges.hooks";
 import { CreateChallengeFormData, CreateChallengeRequest, Hint } from "@/types/challenges.types";
 import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
