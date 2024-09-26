@@ -91,14 +91,14 @@ export default function Page() {
 
                                 <Text className="mb-2 block font-semibold">Hint {map_index+1}</Text>
                                 <Text className="mb-2">Point cost</Text>
-                                <NumberInput defaultValue={10} step={1} className="mb-2" value={hint.cost} onChange={(_, valueAsNumber) => {
+                                <NumberInput defaultValue={10} step={1} className="mb-2" value={hint.point_cost} onChange={(_, valueAsNumber) => {
                                     setFormData({
                                         ...formData,
                                         hints: [
                                             ...formData.hints.slice(0, map_index),
                                             {
-                                                value: hint.value,
-                                                cost: valueAsNumber,
+                                                hint: hint.hint,
+                                                point_cost: valueAsNumber,
                                             },
                                             ...formData.hints.slice(map_index+1)
                                         ]
@@ -110,14 +110,14 @@ export default function Page() {
                                         <NumberDecrementStepper />
                                     </NumberInputStepper>
                                 </NumberInput>
-                                <Textarea placeholder="" className="mb-2" value={hint.value} onChange={(e) => {
+                                <Textarea placeholder="" className="mb-2" value={hint.hint} onChange={(e) => {
                                     setFormData({
                                         ...formData,
                                         hints: [
                                             ...formData.hints.slice(0, map_index),
                                             {
-                                                value: e.target.value,
-                                                cost: hint.cost,
+                                                hint: e.target.value,
+                                                point_cost: hint.point_cost,
                                             },
                                             ...formData.hints.slice(map_index+1)
                                         ]
@@ -137,7 +137,7 @@ export default function Page() {
                     (formData.hints.length < 2) && (
                         <Button className="float-end" onClick={() => {
                             if (formData.hints.length < 2){
-                                setFormData({...formData, hints: [...formData.hints, {value:"", cost:10}]});
+                                setFormData({...formData, hints: [...formData.hints, {hint:"", point_cost:10}]});
                             }
                         }}>
                             Add hint

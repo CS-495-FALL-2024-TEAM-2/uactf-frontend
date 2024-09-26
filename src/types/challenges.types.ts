@@ -1,6 +1,6 @@
 export type Hint = {
-    value: string,
-    cost: number
+    hint: string,
+    point_cost: number
 };
 
 export type Challenges = {

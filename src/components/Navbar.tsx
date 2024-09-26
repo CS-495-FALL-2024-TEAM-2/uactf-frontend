@@ -86,7 +86,9 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
               />
               <MenuList>
                 <MenuItem>
-                  Challenges
+                  <Link href="/challenges">
+                    Challenges
+                  </Link>
                 </MenuItem>
                 <MenuItem>
                   Teams
