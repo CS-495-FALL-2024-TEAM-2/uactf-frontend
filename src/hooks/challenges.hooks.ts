@@ -60,3 +60,27 @@ export const useGetChallenges = (year?: number) : {
 
     return {isPending, error, data};
 }
+
+export const useGetChallengeDetails = (challenge_id: string) : {
+    isPending: boolean,
+    error: Error | null,
+    data: {
+        challenge: Challenges
+    }
+} => {
+    const endpoint = `${BASE_API_URI}/challenges/details?challenge_id=${challenge_id}`
+
+    // query
+    const { isPending, error, data} = useQuery({
+        queryKey: ['challenge', challenge_id],
+        queryFn: async () => {
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return response.json();
+        }
+    });
+
+    return {isPending, error, data};
+}
