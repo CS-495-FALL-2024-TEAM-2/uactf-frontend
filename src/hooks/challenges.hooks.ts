@@ -1,5 +1,7 @@
-import { CreateChallengeRequest } from "@/types/challenges.types";
-import { UseMutateFunction, useMutation } from "@tanstack/react-query";
+import { Challenges, CreateChallengeRequest } from "@/types/challenges.types";
+import { UseMutateFunction, useMutation, useQuery } from "@tanstack/react-query";
+import { BASE_API_URI } from "@/utils/constants";
+
 
 
 
@@ -11,9 +13,8 @@ export const useCreateChallenge = (
     isPending: boolean;
 } => {
     const createChallenge = async (request_body: CreateChallengeRequest) => {
-        console.log(JSON.stringify(request_body))
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/challenges/create`, 
+            `${BASE_API_URI}/challenges/create`, 
             {
                 method: 'POST',
                 headers: {
@@ -34,4 +35,28 @@ export const useCreateChallenge = (
     });
 
     return {mutate: createChallengeMutation.mutate, isPending: createChallengeMutation.isPending};
+}
+
+export const useGetChallenges = (year?: number) : {
+    isPending: boolean,
+    error: Error | null,
+    data: {
+        challenges: Challenges[]
+    }
+} => {
+    const endpoint = year ? `${BASE_API_URI}/challenges/get?year=${year}` : `${BASE_API_URI}/challenges/get`;
+
+    // query
+    const { isPending, error, data} = useQuery({
+        queryKey: year ? ['challenges', year] : ['challenges'],
+        queryFn: async () => {
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return response.json();
+        }
+    });
+
+    return {isPending, error, data};
 }
