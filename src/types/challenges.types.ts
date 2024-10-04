@@ -17,20 +17,6 @@ export type Challenges = {
     file_attachment: File | null,
 }
 
-// to be used in the create challenge form only
-export type CreateChallengeFormData = {
-    challenge_name: string;
-    points: number;
-    challenge_description: string;
-    flag: string;
-    is_flag_case_sensitive: boolean;
-    division: string;
-    challenge_category: string;
-    solution_explanation: string;
-    hints: Hint[];
-    // file_attachment: File | null;
-};
-
 export type CreateChallengeRequest = {
     challenge_name: string;
     points: number;

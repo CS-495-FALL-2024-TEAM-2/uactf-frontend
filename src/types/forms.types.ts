@@ -1,3 +1,18 @@
+import { Hint } from "./challenges.types";
+
+export type CreateChallengeFormData = {
+    challenge_name: string;
+    points: number;
+    challenge_description: string;
+    flag: string;
+    is_flag_case_sensitive: boolean;
+    division: string;
+    challenge_category: string;
+    solution_explanation: string;
+    hints: Hint[];
+    // file_attachment: File | null;
+};
+
 export type TeacherRegisterFormData = {
   school_name: string;
   first_name: string;
@@ -15,7 +30,7 @@ export type CreateStudentFormData = {
 }
 
 export type AddTeamFormData = {
-  division: number;
+  division: number[];
   is_virtual: boolean;
   team_members: CreateStudentFormData[];
 }

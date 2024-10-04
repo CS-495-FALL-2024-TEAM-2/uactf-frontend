@@ -49,14 +49,15 @@ export default function RegisterTeacherForm({
     const form = e.currentTarget;
     e.preventDefault();
 
+    // validate form
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    console.log(formData);
-
     setTeacherRegisterFormInput(formData);
+
+    // If the user doesnt want to add team members now, skip the next step
     if (addTeamMembersNow) {
       setCurrentStep(1);
       return;

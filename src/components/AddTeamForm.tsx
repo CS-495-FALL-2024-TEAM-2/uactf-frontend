@@ -10,7 +10,6 @@ import {
   GridItem,
   Input,
   Stack,
-  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -21,10 +20,10 @@ export default function AddTeamForm({
   setTeamInfo: React.Dispatch<
     React.SetStateAction<AddTeamFormData | null>
   >;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [formData, setFormData] = React.useState<AddTeamFormData>({
-    division: 1,
+    division: [1],
     is_virtual: false,
     team_members: [
       {
@@ -36,19 +35,39 @@ export default function AddTeamForm({
     ],
   });
 
+  const toggleDivision = (division: number) => {
+    if (formData.division.includes(division)) {
+      if (formData.division.length === 1) { // At least one division must be selected
+        return;
+      }
+      setFormData({
+        ...formData,
+        division: formData.division.filter((d) => d !== division),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        division: [...formData.division, division],
+      });
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
     e.preventDefault();
 
+    // validate form
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    console.log(formData);
-
     setTeamInfo(formData);
-    setCurrentStep(2);
+
+    // Check if there's a need to set the current step
+    if (setCurrentStep) {
+      setCurrentStep(2);
+    }
   };
 
   return (
@@ -67,21 +86,25 @@ export default function AddTeamForm({
           </FormLabel>
           <Button
             type="button"
-            className={formData.division === 1 ? 'brightness-50' : ''}
+            className={
+              formData.division.includes(1) ? 'brightness-50' : ''
+            }
             bg="bama_gray"
             color="black"
             width="full"
-            onClick={() => setFormData({ ...formData, division: 1 })}
+            onClick={() => toggleDivision(1)}
           >
             Division 1
           </Button>
           <Button
             type="button"
-            className={formData.division === 2 ? 'brightness-50' : ''}
+            className={
+              formData.division.includes(2) ? 'brightness-50' : ''
+            }
             bg="bama_gray"
             color="black"
             width="full"
-            onClick={() => setFormData({ ...formData, division: 2 })}
+            onClick={() => toggleDivision(2)}
           >
             Division 2
           </Button>
@@ -114,10 +137,9 @@ export default function AddTeamForm({
             Virtual
           </Button>
 
-
           <Box>
             {formData.team_members.map((team_member, i) => (
-              <>
+              <div key={i}>
                 <hr />
                 <Stack spacing={1}>
                   <FormLabel>Student {i + 1}</FormLabel>
@@ -230,23 +252,25 @@ export default function AddTeamForm({
                     </Grid>
                   </FormControl>
                 </Stack>
-                {formData.team_members.length > 1 && (<Button
-                  className="mt-1 mb-1"
-                  type="button"
-                  colorScheme="red"
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      team_members: [
-                        ...formData.team_members.slice(0, i),
-                        ...formData.team_members.slice(i + 1),
-                      ],
-                    })
-                  }
-                >
-                  Remove Student
-                </Button>)}
-              </>
+                {formData.team_members.length > 1 && (
+                  <Button
+                    className="mt-1 mb-1"
+                    type="button"
+                    colorScheme="red"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        team_members: [
+                          ...formData.team_members.slice(0, i),
+                          ...formData.team_members.slice(i + 1),
+                        ],
+                      })
+                    }
+                  >
+                    Remove Student
+                  </Button>
+                )}
+              </div>
             ))}
 
             {formData.team_members.length < 4 && (
@@ -281,11 +305,7 @@ export default function AddTeamForm({
             flexDirection="row"
             justifyContent="center"
           >
-            <Button
-              type="submit"
-              colorScheme="blue"
-              width={40}
-            >
+            <Button type="submit" colorScheme="blue" width={40}>
               Add This Team
             </Button>
           </Box>
