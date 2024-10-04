@@ -1,6 +1,6 @@
 import React from 'react';
-import Banner from '@/components/Banner';
 import '../../globals.css';
+import PublicNavbar from '@/components/PublicNavbar';
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <div className="flex flex-col min-w-screen min-h-screen max-h-screen">
-      <Banner />
+      <PublicNavbar />
       {children}
     </div>
   );

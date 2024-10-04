@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-export default function Banner() {
+export default function PublicNavbar() {
   return (
     <Flex direction="row" bg="bama_gray" height="64px" px={4} alignItems="center">
       <Box>
