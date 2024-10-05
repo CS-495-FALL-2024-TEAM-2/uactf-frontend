@@ -24,6 +24,10 @@ export const useCreateChallenge = (
             }
         );
 
+        if (!response.ok) {
+            throw new Error('Error creating challenge. Please try again');
+        }
+
         return await response.json();
     };
 
