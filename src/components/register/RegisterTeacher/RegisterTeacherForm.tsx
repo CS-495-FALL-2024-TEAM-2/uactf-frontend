@@ -9,6 +9,7 @@ import {
   Grid,
   GridItem,
   Input,
+  Select,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -116,9 +117,7 @@ export default function RegisterTeacherForm({
           <hr />
 
           <FormControl isRequired>
-            <FormLabel htmlFor="school_name">
-              School Name
-            </FormLabel>
+            <FormLabel htmlFor="school_name">School Name</FormLabel>
             <Input
               type="text"
               name="school_name"
@@ -136,9 +135,7 @@ export default function RegisterTeacherForm({
           <FormControl isRequired>
             <Grid templateColumns="repeat(2, 1fr)">
               <GridItem>
-                <FormLabel htmlFor="first_name">
-                  First Name
-                </FormLabel>
+                <FormLabel htmlFor="first_name">First Name</FormLabel>
               </GridItem>
               <GridItem>
                 <Input
@@ -153,9 +150,7 @@ export default function RegisterTeacherForm({
           <FormControl>
             <Grid templateColumns="repeat(2, 1fr)">
               <GridItem>
-                <FormLabel htmlFor="last_name">
-                  Last Name
-                </FormLabel>
+                <FormLabel htmlFor="last_name">Last Name</FormLabel>
               </GridItem>
               <GridItem>
                 <Input
@@ -170,9 +165,7 @@ export default function RegisterTeacherForm({
           <FormControl isRequired>
             <Grid templateColumns="repeat(2, 1fr)">
               <GridItem>
-                <FormLabel htmlFor="email">
-                  Email
-                </FormLabel>
+                <FormLabel htmlFor="email">Email</FormLabel>
               </GridItem>
               <GridItem>
                 <Input
@@ -204,17 +197,20 @@ export default function RegisterTeacherForm({
           <FormControl isRequired>
             <Grid templateColumns="repeat(2, 1fr)">
               <GridItem>
-                <FormLabel htmlFor="shirt_size">
-                  Shirt Size
-                </FormLabel>
+                <FormLabel htmlFor="shirt_size">Shirt Size</FormLabel>
               </GridItem>
               <GridItem>
-                <Input
-                  type="text"
+                <Select
                   name="shirt_size"
                   id="shirt_size"
                   onChange={handleInputChange}
-                />
+                  required
+                >
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+                  <option value="extra large">Extra Large</option>
+                </Select>
               </GridItem>
             </Grid>
           </FormControl>
@@ -251,11 +247,7 @@ export default function RegisterTeacherForm({
             flexDirection="row"
             justifyContent="center"
           >
-            <Button
-              type="submit"
-              colorScheme="blue"
-              width={40}
-            >
+            <Button type="submit" colorScheme="blue" width={40}>
               Register
             </Button>
           </Box>

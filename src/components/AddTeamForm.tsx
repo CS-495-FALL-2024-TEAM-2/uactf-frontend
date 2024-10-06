@@ -9,6 +9,7 @@ import {
   Grid,
   GridItem,
   Input,
+  Select,
   Stack,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -37,7 +38,8 @@ export default function AddTeamForm({
 
   const toggleDivision = (division: number) => {
     if (formData.division.includes(division)) {
-      if (formData.division.length === 1) { // At least one division must be selected
+      if (formData.division.length === 1) {
+        // At least one division must be selected
         return;
       }
       setFormData({
@@ -50,7 +52,7 @@ export default function AddTeamForm({
         division: [...formData.division, division],
       });
     }
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
@@ -230,9 +232,8 @@ export default function AddTeamForm({
                         <FormLabel>Shirt size</FormLabel>
                       </GridItem>
                       <GridItem>
-                        <Input
-                          type="text"
-                          value={team_member.shirt_size}
+                        <Select
+                          name="shirt_size"
                           id="shirt_size"
                           onChange={(e) => {
                             setFormData({
@@ -247,7 +248,13 @@ export default function AddTeamForm({
                               ],
                             });
                           }}
-                        />
+                          required
+                        >
+                          <option value="small">Small</option>
+                          <option value="medium">Medium</option>
+                          <option value="large">Large</option>
+                          <option value="extra large">Extra Large</option>
+                        </Select>
                       </GridItem>
                     </Grid>
                   </FormControl>
