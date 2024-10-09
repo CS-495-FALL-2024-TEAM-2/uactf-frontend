@@ -2,9 +2,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { CurrentUserContext } from "@/contexts/current-user.context";
+import { useGetCurrentUser } from "./current-user.hooks";
 
 export function useProtectedRoute() {
-  const {currentUser, setCurrentUser} = useContext(CurrentUserContext);
+  const currentUser = useGetCurrentUser();
 
   const router = useRouter();
 
@@ -32,26 +33,6 @@ export function useProtectedRoute() {
   }
 
   
-  useEffect(() => {
-      if (currentUser == null){
-  
-        // this assumes we already have valid access and refresh tokens stored in cookies
-        // if the api call fails, we would simply redirect to /login
-        //simulate api call
-        setTimeout(() => {
-        }, 2000);
-    
-        const apiResponse = {
-          userId: "1",
-          userRole: "teacher"
-        };
-  
-        console.log("hey");
-  
-        setCurrentUser(apiResponse);
-      }  
-      
-    }, []);
 
 
 
@@ -62,7 +43,7 @@ export function useProtectedRoute() {
           router.replace("/");
       }
       
-  }, [currentUser]);
+  }, []);
 
   return isValidRoute;
 }
