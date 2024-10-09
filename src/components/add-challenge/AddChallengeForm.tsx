@@ -1,10 +1,9 @@
 "use client"
 
 import { useCreateChallenge } from "@/hooks/challenges.hooks";
-import { CreateChallengeFormData, CreateChallengeRequest, Hint } from "@/types/challenges.types";
+import {CreateChallengeRequest } from "@/types/challenges.types";
+import { CreateChallengeFormData } from "@/types/forms.types";
 import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import * as React from "react";
 import { useState } from "react";
 
 export default function AddChallengeForm(){

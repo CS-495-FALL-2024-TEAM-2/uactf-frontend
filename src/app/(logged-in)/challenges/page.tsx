@@ -1,17 +1,15 @@
 "use client"
 import * as React from "react";
-import {NextUIProvider} from "@nextui-org/system";
-import ChallengesTable from "../../../components/ChallengesTable";
-import { useGetChallenges } from "@/hooks/challenges.hooks";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import dynamic from "next/dynamic";
+
+const ChallengesPage = dynamic(() => import("@/components/ChallengesPage"));
+  
 
 export default function Page() {
-  const {isPending, error, data} = useGetChallenges();
-
-  if (isPending) return <div className="flex justify-center items-center h-100 text-bold">Loading...</div>;
-  if (error) return <div className="flex justify-center items-center h-100 text-bold">Error: {error.message}</div>;
   return (
-    <NextUIProvider>
-      <ChallengesTable challengesData={data.challenges} />
-    </NextUIProvider>
+    <ProtectedRoute>
+      <ChallengesPage />
+    </ProtectedRoute>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { CurrentUserContext, CurrentUserContextObjectType } from '@/contexts/current-user.context';
 import {
   Button,
   FormControl,
@@ -8,15 +9,43 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 
 export default function LoginForm() {
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
 
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+
+  const {setCurrentUser} = useContext(CurrentUserContext);
+
+  const router = useRouter();
+
+
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // simulate api call to login
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    const apiResponse = {
+      userId: "1",
+      userRole: "teacher"
+    };
+
+    setCurrentUser(apiResponse);
+
+    router.replace("/");
+
+    // set value in context
     console.log('Login form submitted', { username, password });
+
+     
   };
 
   return (
@@ -48,6 +77,7 @@ export default function LoginForm() {
           bg="bama_gray"
           color="black"
           width="full"
+          isLoading={isLoading}
         >
           Login
         </Button>
