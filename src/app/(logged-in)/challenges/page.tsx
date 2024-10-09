@@ -3,6 +3,7 @@ import * as React from "react";
 import {NextUIProvider} from "@nextui-org/system";
 import ChallengesTable from "../../../components/ChallengesTable";
 import { useGetChallenges } from "@/hooks/challenges.hooks";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function Page() {
   const {isPending, error, data} = useGetChallenges();
@@ -10,8 +11,11 @@ export default function Page() {
   if (isPending) return <div className="flex justify-center items-center h-100 text-bold">Loading...</div>;
   if (error) return <div className="flex justify-center items-center h-100 text-bold">Error: {error.message}</div>;
   return (
-    <NextUIProvider>
-      <ChallengesTable challengesData={data.challenges} />
-    </NextUIProvider>
+    <ProtectedRoute>
+      <NextUIProvider>
+        <ChallengesTable challengesData={data.challenges} />
+      </NextUIProvider>
+    </ProtectedRoute>
+    
   );
 }
