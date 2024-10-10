@@ -34,3 +34,8 @@ export type AddTeamFormData = {
   is_virtual: boolean;
   team_members: CreateStudentFormData[];
 }
+
+export type CDMemberRegisterFormData = {
+  email: string;
+  password: string;
+}
