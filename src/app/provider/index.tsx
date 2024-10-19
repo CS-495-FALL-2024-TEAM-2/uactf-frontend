@@ -6,6 +6,8 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import theme from '../../utils/theme/theme';
+import React from 'react';
+import { CurrentUserProvider } from '@/contexts/current-user.context';
 
 export default function Provider({
   children,
@@ -16,7 +18,11 @@ export default function Provider({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+      <ChakraProvider theme={theme}>
+        <CurrentUserProvider>
+          {children}
+        </CurrentUserProvider>
+      </ChakraProvider>
     </QueryClientProvider>
   );
 }
