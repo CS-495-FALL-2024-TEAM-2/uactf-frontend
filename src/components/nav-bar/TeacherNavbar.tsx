@@ -4,27 +4,22 @@ import {
   Box,
   Flex,
   Avatar,
-  Text,
   Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
   useColorModeValue,
   Stack,
-  useColorMode,
   Center,
   IconButton,
 } from '@chakra-ui/react'
-import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
-import Link from 'next/link'
+import { HamburgerIcon } from '@chakra-ui/icons'
+import NavbarLogo from './NavbarLogo'
+import NavbarThemeMenuItem from './NavbarThemeMenuItem'
 
-export default function Navbar() {
-  const { colorMode, toggleColorMode } = useColorMode()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
+export default function TeacherNavbar() {
   const profileMenu = <Menu>
   <MenuButton
     as={Button}
@@ -55,9 +50,6 @@ export default function Navbar() {
   </MenuList>
 </Menu>;
 
-const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'black')} onClick={toggleColorMode}>
-{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-</Button>
 
 
   return (
@@ -65,17 +57,14 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
       <Box bg={useColorModeValue('bama_gray', 'black')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 
-          <Box>
-            <Text className='md:hidden' as='b' color='UA_red'>UACTF</Text>
-            <Text className='hidden md:block' as='b' color='UA_red'>UA Capture The Flag</Text>
-          </Box>
+          <NavbarLogo />
 
           <Box className='md:hidden'>
             <div className='inline mr-4'>
               {profileMenu}
             </div>
             <div className='inline mr-4'>
-            {themeMenuItem}
+            <NavbarThemeMenuItem />
             </div>
             <Menu>
               <MenuButton
@@ -85,11 +74,6 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
                 variant='outline'
               />
               <MenuList>
-                <MenuItem>
-                  <Link href="/challenges">
-                    Challenges
-                  </Link>
-                </MenuItem>
                 <MenuItem>
                   Teams
                 </MenuItem>
@@ -101,15 +85,10 @@ const themeMenuItem = <Button size='sm' bg={useColorModeValue('bama_gray', 'blac
           <Box className='hidden md:block'>
             <Flex alignItems={'center'}>
               <Stack direction={'row'} spacing={3}>
-                <Link href="/challenges">
-                  <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
-                    Challenges
-                  </Button>
-                </Link>
-                <Button size='sm' bg={useColorModeValue('bama_gray', 'black')} onClick={toggleColorMode}>
+                <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
                   Teams
                 </Button>
-                {themeMenuItem}
+                <NavbarThemeMenuItem />
 
                 {profileMenu}
               </Stack>
