@@ -1,49 +1,26 @@
 "use client"
-import { useContext, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { CurrentUserContext } from "@/contexts/current-user.context";
-import { useGetCurrentUser } from "./current-user.hooks";
+import { usePathname } from "next/navigation";
+import { useGetCurrentUser } from "@/contexts/current-user.context";
 
 export function useProtectedRoute() {
-  const currentUser = useGetCurrentUser();
+    const currentUser = useGetCurrentUser();
 
-  const router = useRouter();
-
-  const pathname = usePathname();
-
-  const [isValidRoute, setIsValidRoute] = useState<boolean>(false);
+    const pathname = usePathname();
 
 
-  const checkRoute = () => {
-      if (pathname.startsWith("/competitions")){
-          if (currentUser?.userRole !== "admin"){
-              return false;
-          }
-      } else if (pathname.startsWith("/challenges")){
-          if (currentUser?.userRole !== "admin" && currentUser?.userRole !== "uacd"){
-              return false;
-          } 
-      } else if (pathname.startsWith("/teams")){
-          if (currentUser?.userRole !== "admin" && currentUser?.userRole !== "teacher"){
-              return false;
-          }
-      }
+    if (pathname.startsWith("/competitions")){
+        if (currentUser?.userRole === "admin"){
+            return true;
+        }
+    } else if (pathname.startsWith("/challenges")){
+        if (currentUser?.userRole === "admin" || currentUser?.userRole === "uacd"){
+            return true;
+        } 
+    } else if (pathname.startsWith("/teams")){
+        if (currentUser?.userRole === "admin" || currentUser?.userRole === "teacher"){
+            return true;
+        }
+    }
 
-      return true;
-  }
-
-  
-
-
-
-  useEffect(() => {
-      if (checkRoute()){
-          setIsValidRoute(true);
-      } else {
-          router.replace("/");
-      }
-      
-  }, []);
-
-  return isValidRoute;
+    return false;
 }

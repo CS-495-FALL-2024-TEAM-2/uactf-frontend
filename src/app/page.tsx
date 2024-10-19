@@ -1,6 +1,5 @@
 "use client"
-import { CurrentUserContext } from "@/contexts/current-user.context";
-import { useGetCurrentUser } from "@/hooks/current-user.hooks";
+import { CurrentUserContext, useGetCurrentUser } from "@/contexts/current-user.context";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
