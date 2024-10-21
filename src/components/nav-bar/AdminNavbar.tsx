@@ -76,13 +76,20 @@ export default function AdminNavbar() {
                 variant='outline'
               />
               <MenuList>
+              <MenuItem>
+                  <Link href="/competitions">
+                    Challenges
+                  </Link>
+                </MenuItem>
                 <MenuItem>
                   <Link href="/challenges">
                     Challenges
                   </Link>
                 </MenuItem>
                 <MenuItem>
-                  Teams
+                  <Link href="/teams">
+                    Teams
+                  </Link>
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -92,14 +99,21 @@ export default function AdminNavbar() {
           <Box className='hidden md:block'>
             <Flex alignItems={'center'}>
               <Stack direction={'row'} spacing={3}>
+                <Link href="/competitions">
+                  <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
+                    Competitions
+                  </Button>
+                </Link>
                 <Link href="/challenges">
                   <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
                     Challenges
                   </Button>
                 </Link>
-                <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
-                  Teams
-                </Button>
+                <Link href="/teams">
+                  <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
+                    Teams
+                  </Button>
+                </Link>
                 <NavbarThemeMenuItem />
 
                 {profileMenu}
