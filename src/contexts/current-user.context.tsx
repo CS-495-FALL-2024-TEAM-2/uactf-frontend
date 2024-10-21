@@ -31,7 +31,7 @@ export function useGetCurrentUser(){
       
           const apiResponse = {
             userId: "1",
-            userRole: "teacher"
+            userRole: "admin"
           };
     
           console.log("hey");

@@ -1,6 +1,11 @@
-import React from 'react';
-import Navbar from "../../components/Navbar";
+"use client"
+
+import React, { ReactNode } from 'react';
 import '../globals.css';
+import { useGetCurrentUser } from '@/contexts/current-user.context';
+import AdminNavbar from '@/components/nav-bar/AdminNavbar';
+import TeacherNavbar from '@/components/nav-bar/TeacherNavbar';
+import CrimsonDefenseNavbar from '@/components/nav-bar/CrimsonDefenseNavbar';
 
 
 export default function RootLayout({
@@ -8,10 +13,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  const currentUser = useGetCurrentUser();
+
+  const mapRoleToNavbar : { [key: string]: ReactNode } = {
+    'admin': <AdminNavbar />,
+    'teacher': <TeacherNavbar />,
+    'uacd': <CrimsonDefenseNavbar />
+  };
   
   return (
     <>
-        <Navbar />
+        {currentUser?.userRole && mapRoleToNavbar[currentUser.userRole]}
         {children}
     </>
   );
