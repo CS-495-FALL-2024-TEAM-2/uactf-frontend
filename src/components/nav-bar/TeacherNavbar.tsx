@@ -14,6 +14,7 @@ import {
   Stack,
   Center,
   IconButton,
+  Link,
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import NavbarLogo from './NavbarLogo'
@@ -75,7 +76,9 @@ export default function TeacherNavbar() {
               />
               <MenuList>
                 <MenuItem>
-                  Teams
+                  <Link href="/teams">
+                    Teams
+                  </Link>
                 </MenuItem>
               </MenuList>
             </Menu>
@@ -85,9 +88,11 @@ export default function TeacherNavbar() {
           <Box className='hidden md:block'>
             <Flex alignItems={'center'}>
               <Stack direction={'row'} spacing={3}>
-                <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
-                  Teams
-                </Button>
+                <Link href="/teams">
+                  <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
+                    Teams
+                  </Button>
+                </Link>
                 <NavbarThemeMenuItem />
 
                 {profileMenu}
