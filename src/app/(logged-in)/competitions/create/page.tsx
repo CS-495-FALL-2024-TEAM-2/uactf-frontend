@@ -4,11 +4,11 @@ import dynamic from "next/dynamic";
 
 export default function Page() {
 
-  const CompetitionsPage = dynamic(() => import('@/components/CompetitionsPage'))
+  const CreateCompetitionsPage = dynamic(() => import('@/components/CreateCompetitionsPage'))
   
   return (
     <ProtectedRoute>
-       <CompetitionsPage />
+       <CreateCompetitionsPage />
     </ProtectedRoute>
     
   );

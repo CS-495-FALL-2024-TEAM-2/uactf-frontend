@@ -1,4 +1,5 @@
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function CompetitionsPage(){
     const competitions = [
@@ -39,7 +40,10 @@ export default function CompetitionsPage(){
         >
             <Flex className="w-full" justifyContent="space-between" flexDirection={{base: "column", md:"row"}}>
                 <Heading>Competitions</Heading>
-                <Button colorScheme="green" className="mt-4 md:mt-0">Create competition</Button>
+                <Link href="/competitions/create">
+                    <Button colorScheme="green" className="mt-4 md:mt-0">Create competition</Button>
+                </Link>
+                
             </Flex>
 
             <SimpleGrid className="mt-4" spacing={4} columns={{sm: 1, md: 2, xl: 3}}>
@@ -60,7 +64,6 @@ export default function CompetitionsPage(){
                                 <CardFooter>
                                     <Button colorScheme="blue">Edit</Button>
                                 </CardFooter>
-                            
                             }
                         </Card>
                     );
