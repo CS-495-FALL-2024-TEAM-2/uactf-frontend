@@ -8,6 +8,7 @@ import {
 import RegisterTeacherForm from './RegisterTeacherForm';
 import AddTeamForm from '../../AddTeamForm';
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
+import { useCreateTeacher } from '@/hooks/accounts.hooks';
 
 export default function RegisterTeacher() {
   const [
@@ -22,15 +23,29 @@ export default function RegisterTeacher() {
     'pending' | 'success' | 'error'
   >('pending');
 
+  const { mutate: createTeacher } = useCreateTeacher(
+    (data) => {
+      // TODO: Add team members if there are any
+      setTeacherRegisterFormInput(null);
+      setStatus('success');
+    },
+    (error) => {
+      setStatus('error');
+    }
+  );
+
   const handleRegistration = () => {
     // Depends on if there are team members to add or not, and if the teacher is already registered
-    console.log('Handling registration', teacherRegisterFormInput);
-    console.log('Team info', teamInfo);
-
-    // TODO: Implement registration logic
-    setTimeout(() => {
-      setStatus('success');
-    }, 2000);
+    if (teacherRegisterFormInput) {
+      createTeacher({
+        first_name: teacherRegisterFormInput.first_name,
+        last_name: teacherRegisterFormInput.last_name,
+        email: teacherRegisterFormInput.email,
+        school_address: teacherRegisterFormInput.school_name,
+        contact_number: teacherRegisterFormInput.contact_number,
+        shirt_size: teacherRegisterFormInput.shirt_size,
+      });
+    }
   };
 
   const [currentStep, setCurrentStep] = React.useState(0);
