@@ -47,7 +47,7 @@ export const useCreateTeacher = (
 } => {
   const createTeacher = async (request_body: CreateTeacherRequest) => {
     const response = await fetch(
-      `${BASE_API_URI}/accounts/teacher/create`,
+      `${BASE_API_URI}/accounts/teachers/create`,
       {
         method: 'POST',
         headers: {
