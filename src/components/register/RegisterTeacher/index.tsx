@@ -41,7 +41,7 @@ export default function RegisterTeacher() {
         first_name: teacherRegisterFormInput.first_name,
         last_name: teacherRegisterFormInput.last_name,
         email: teacherRegisterFormInput.email,
-        school_address: teacherRegisterFormInput.school_name,
+        school_name: teacherRegisterFormInput.school_name,
         contact_number: teacherRegisterFormInput.contact_number,
         shirt_size: teacherRegisterFormInput.shirt_size,
       });

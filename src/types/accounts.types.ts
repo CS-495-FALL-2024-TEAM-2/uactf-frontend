@@ -8,7 +8,7 @@ export type CreateCrimsonDefenseRequest = {
 export type CreateTeacherRequest = {
   first_name: string;
   last_name: string;
-  school_address: string;
+  school_name: string;
   shirt_size: string;
   contact_number: string;
   email: string;
