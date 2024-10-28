@@ -1,6 +1,7 @@
 'use client';
 
 import { CurrentUserContext, CurrentUserContextObjectType } from '@/contexts/current-user.context';
+import { useLogin } from '@/hooks/accounts.hooks';
 import {
   Button,
   FormControl,
@@ -9,43 +10,52 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useContext, useState } from 'react';
 
 export default function LoginForm() {
-  const [username, setUsername] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
-
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 
   const {setCurrentUser} = useContext(CurrentUserContext);
 
+  const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
+
   const router = useRouter();
+
+  const { mutate: login, isPending: loginIsPending } = useLogin(
+    (data) => {
+      console.log(data);
+      setFormErrorAlert(null);
+
+      // TODO
+      // setCurrentUser(apiResponse); 
+      //router.replace("/");
+    },
+    (error) => {
+      setFormErrorAlert(error.message);
+    }
+  );
 
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
     e.preventDefault();
 
-    // simulate api call to login
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    // validation
+    if (!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
 
-    const apiResponse = {
-      userId: "1",
-      userRole: "teacher"
-    };
-
-    setCurrentUser(apiResponse);
-
-    router.replace("/");
+    login({
+      email: email,
+      password: password
+    });
 
     // set value in context
-    console.log('Login form submitted', { username, password });
-
-     
+    console.log('Login form submitted', { email, password });
   };
 
   return (
@@ -55,12 +65,12 @@ export default function LoginForm() {
           Login
         </Text>
         <FormControl isRequired>
-          <FormLabel>Username</FormLabel>
+          <FormLabel>Email Address</FormLabel>
           <Input
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={(e) => setUsername(e.currentTarget.value)}
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            onChange={(e) => setEmail(e.currentTarget.value)}
           />
         </FormControl>
         <FormControl isRequired>
@@ -77,7 +87,7 @@ export default function LoginForm() {
           bg="bama_gray"
           color="black"
           width="full"
-          isLoading={isLoading}
+          isLoading={loginIsPending}
         >
           Login
         </Button>
