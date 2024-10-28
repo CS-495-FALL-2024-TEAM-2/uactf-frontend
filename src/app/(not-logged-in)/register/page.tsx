@@ -16,7 +16,7 @@ export default function Page() {
         <Link href="/register/teacher">
           <Button colorScheme="red" width={96}>Teacher</Button>
         </Link>
-        <Link href="/register/student">
+        <Link href="/register/cd-member">
           <Button colorScheme="red" width={96}>Crimson Defense Member</Button>
         </Link>
       </Stack>
