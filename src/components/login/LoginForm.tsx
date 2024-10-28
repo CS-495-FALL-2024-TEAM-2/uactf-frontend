@@ -45,7 +45,7 @@ export default function LoginForm() {
     // set value in context
     console.log('Login form submitted', { username, password });
 
-     
+
   };
 
   return (
