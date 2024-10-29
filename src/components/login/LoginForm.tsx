@@ -29,9 +29,10 @@ export default function LoginForm() {
       console.log(data);
       setFormErrorAlert(null);
 
-      // TODO
-      // setCurrentUser(apiResponse); 
-      //router.replace("/");
+      setCurrentUser({
+        userRole: data.role
+      }); 
+      router.replace("/");
     },
     (error) => {
       setFormErrorAlert(error.message);

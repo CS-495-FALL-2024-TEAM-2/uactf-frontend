@@ -28,7 +28,7 @@ export default function ProtectedRoute({ children }: {
                 result = true;
             }
         } else if (pathname.startsWith("/challenges")){
-            if (currentUser?.userRole === "admin" || currentUser?.userRole === "uacd"){
+            if (currentUser?.userRole === "admin" || currentUser?.userRole === "crimson_defense"){
                 result = true;
             } 
         } else if (pathname.startsWith("/teams")){
