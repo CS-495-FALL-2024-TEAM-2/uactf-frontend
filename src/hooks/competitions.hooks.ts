@@ -15,7 +15,7 @@ export const useGetCompetitions = (isCurrent?: boolean) : {
     const { isPending, error, data} = useQuery({
         queryKey: isCurrent === true ? ['competitions', 'current'] : ['competitions'],
         queryFn: async () => {
-            const response = await fetch(endpoint);
+            const response = await fetch(endpoint, {credentials: 'include',});
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
@@ -42,6 +42,7 @@ export const useCreateCompetition = (
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(request_body),
             }
         );

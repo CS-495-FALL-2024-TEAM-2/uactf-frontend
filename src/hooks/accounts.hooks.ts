@@ -17,6 +17,7 @@ export const useCreateCDMember = (
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(request_body),
       }
     );
@@ -53,6 +54,7 @@ export const useCreateTeacher = (
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(request_body),
       }
     );
@@ -89,6 +91,7 @@ export const useLogin = (
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(request_body),
             }
         );
