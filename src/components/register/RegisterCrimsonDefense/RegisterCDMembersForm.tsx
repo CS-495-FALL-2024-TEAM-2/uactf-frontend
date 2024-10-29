@@ -27,7 +27,6 @@ export default function RegisterCDMembersForm({
     CDMemberRegisterFormData
   >({
     email: '',
-    password: '',
   });
 
   const [errorMessage, setErrorMessage] = React.useState<string>('');
@@ -50,18 +49,6 @@ export default function RegisterCDMembersForm({
       return;
     }
 
-    const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/.test(
-      formData.password
-    );
-
-    if (!validPassword) {
-      setErrorMessage(
-        'Password must have at least 8 letters, including at least one uppercase letter, one lowercase letter, one number, and one special character.'
-      );
-      return;
-    }
-
-    console.log('Registering CD member', formData);
     setCDMemberFormInput(formData);
     setCurrentStep(1);
   };
@@ -95,21 +82,6 @@ export default function RegisterCDMembersForm({
                 id="email"
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
-                }}
-              />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    password: e.target.value,
-                  });
                 }}
               />
             </FormControl>

@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import RegisterCDMembersForm from './RegisterCDMembersForm';
 import { CDMemberRegisterFormData } from '../../../types/forms.types';
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
+import { useCreateCDMember } from '@/hooks/accounts.hooks';
 
 export default function RegisterCrimsonDefense() {
   const [
@@ -14,14 +15,24 @@ export default function RegisterCrimsonDefense() {
     'pending' | 'success' | 'error'
   >('pending');
 
-  const handleRegistration = () => {
-    // Depends on if there are team members to add or not, and if the teacher is already registered
-    console.log('Handling registration', cdMemberFormInput);
-
-    // TODO: Implement registration logic
-    setTimeout(() => {
+  const { mutate: createCDMember } = useCreateCDMember(
+    (data) => {
       setStatus('success');
-    }, 2000);
+      setCDMemberFormInput(null);
+    },
+    (error) => {
+      setStatus('error');
+    }
+  );
+
+  const handleRegistration = () => {
+    if (cdMemberFormInput) {
+      createCDMember({
+        competition_id: '1', // TODO: Update this to the actual competition id
+        email: cdMemberFormInput.email,
+        role: 'crimson_defense',
+      });
+    }
   };
 
   const [currentStep, setCurrentStep] = React.useState<number>(0);

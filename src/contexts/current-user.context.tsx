@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type CurrentUserContextObjectType = {
     userRole: string,
-    userId: string
 };
 
 export type CurrentUserContextType = {
@@ -28,7 +27,6 @@ export function useGetCurrentUser(){
           }, 2000);
       
           const apiResponse = {
-            userId: "1",
             userRole: "admin"
           };
         

@@ -12,7 +12,7 @@ export default function Page() {
     // if we decide to not conditionally render pages in this component, we should probably move to logic to LoginForm as well and use it instead of redirecting to /
     if (currentUser?.userRole == "admin"){
       router.replace("/competitions");
-    } else if (currentUser?.userRole == "uacd") {
+    } else if (currentUser?.userRole == "crimson_defense") {
       router.replace("/challenges");
     } else if (currentUser?.userRole == "teacher"){
       router.replace("/teams");
