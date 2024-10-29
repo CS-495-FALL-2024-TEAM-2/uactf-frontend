@@ -19,9 +19,9 @@ export default function RootLayout({
   const mapRoleToNavbar : { [key: string]: ReactNode } = {
     'admin': <AdminNavbar />,
     'teacher': <TeacherNavbar />,
-    'uacd': <CrimsonDefenseNavbar />
+    'crimson_defense': <CrimsonDefenseNavbar />
   };
-  
+
   return (
     <>
         {currentUser?.userRole && mapRoleToNavbar[currentUser.userRole]}

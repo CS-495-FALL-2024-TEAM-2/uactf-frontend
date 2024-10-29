@@ -14,12 +14,13 @@ export const useCreateChallenge = (
 } => {
     const createChallenge = async (request_body: CreateChallengeRequest) => {
         const response = await fetch(
-            `${BASE_API_URI}/challenges/create`, 
+            `${BASE_API_URI}/challenges/create`,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(request_body),
             }
         );
@@ -54,7 +55,10 @@ export const useGetChallenges = (year?: number) : {
     const { isPending, error, data} = useQuery({
         queryKey: year ? ['challenges', year] : ['challenges'],
         queryFn: async () => {
-            const response = await fetch(endpoint);
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
@@ -78,7 +82,10 @@ export const useGetChallengeDetails = (challenge_id: string) : {
     const { isPending, error, data} = useQuery({
         queryKey: ['challenge', challenge_id],
         queryFn: async () => {
-            const response = await fetch(endpoint);
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
