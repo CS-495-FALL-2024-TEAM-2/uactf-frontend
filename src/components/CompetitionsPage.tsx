@@ -17,31 +17,31 @@ export default function CompetitionsPage(){
                 registration_deadline: "November 29th, 2024"
             },
             {
-                competition_id: 1,
+                competition_id: 2,
                 competition_name: "Capture the Flag 2023",
                 is_active: false,
                 registration_deadline: "November 29th, 2023"
             },
             {
-                competition_id: 1,
+                competition_id: 3,
                 competition_name: "Capture the Flag 2022",
                 is_active: false,
                 registration_deadline: "November 29th, 2022"
             },
             {
-                competition_id: 1,
+                competition_id: 4,
                 competition_name: "Capture the Flag 2021",
                 is_active: false,
                 registration_deadline: "November 29th, 2021"
             },
             {
-                competition_id: 1,
+                competition_id: 5,
                 competition_name: "Capture the Flag 2020",
                 is_active: false,
                 registration_deadline: "November 29th, 2020"
             },
             {
-                competition_id: 1,
+                competition_id: 6,
                 competition_name: "Capture the Flag 2019",
                 is_active: false,
                 registration_deadline: "November 29th, 2019"
