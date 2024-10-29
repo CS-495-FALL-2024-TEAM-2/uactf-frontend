@@ -1,9 +1,9 @@
-import { LoginRequest } from "@/types/accounts.types";
+import { LoginRequest, LoginResponse, UserRole } from "@/types/accounts.types";
 import { BASE_API_URI } from "@/utils/constants";
-import { UseMutateFunction, useMutation } from "@tanstack/react-query";
+import { UseMutateFunction, useMutation, useQuery } from "@tanstack/react-query";
 
 export const useLogin = (
-    onSuccessFn?: ((data: any, variables: LoginRequest, context: unknown) => Promise<unknown> | unknown) | undefined,
+    onSuccessFn?: ((data: LoginResponse, variables: LoginRequest, context: unknown) => Promise<unknown> | unknown) | undefined,
     onErrorFn?: ((error: Error, variables: LoginRequest, context: unknown) => Promise<unknown> | unknown) | undefined
 ) : {
     isPending: boolean
@@ -37,3 +37,27 @@ export const useLogin = (
 
     return {mutate: loginMutation.mutate, isPending: loginMutation.isPending};
 };
+
+
+
+export const useGetUserRole = () : {
+    isPending: boolean,
+    error: Error | null,
+    data: UserRole
+} => {
+    const endpoint = `${BASE_API_URI}/auth/role`
+
+    // query
+    const { isPending, error, data} = useQuery({
+        queryKey: ['auth', 'role'],
+        queryFn: async () => {
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error('Network response was not ok')
+            }
+            return response.json();
+        }
+    });
+
+    return {isPending, error, data};
+}

@@ -1,9 +1,11 @@
+import { useGetUserRole } from '@/hooks/accounts.hooks';
+import { BASE_API_URI } from '@/utils/constants';
+import { useRouter } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 
 export type CurrentUserContextObjectType = {
-    userRole: string,
-    userId: string
+  userRole: string,
 };
 
 export type CurrentUserContextType = {
@@ -17,23 +19,26 @@ export const CurrentUserContext = createContext<CurrentUserContextType>({
 });
 
 export function useGetCurrentUser(){
-    let {currentUser, setCurrentUser} = useContext(CurrentUserContext);    
+    let {currentUser, setCurrentUser} = useContext(CurrentUserContext);  
+    const router = useRouter();  
     
     useEffect(() => {
-        if (currentUser == null){
-          // this assumes we already have valid access and refresh tokens stored in cookies
-          // if the api call fails, we would simply redirect to /login
-          //simulate api call
-          setTimeout(() => {
-          }, 2000);
-      
-          const apiResponse = {
-            userId: "1",
-            userRole: "admin"
-          };
-        
-          setCurrentUser(apiResponse);
-        }    
+
+      const getUserRoles = async () => {
+        const response = await fetch(`${BASE_API_URI}/auth/role`, {credentials: 'include'});
+        if (!response.ok) {
+          router.replace("/login");
+        } else {
+          const data = await response.json();
+          setCurrentUser({
+            userRole: data.role
+          });
+        }
+      }
+
+      if (currentUser == null){
+        getUserRoles();
+      }    
 
     }, [currentUser]);
 
