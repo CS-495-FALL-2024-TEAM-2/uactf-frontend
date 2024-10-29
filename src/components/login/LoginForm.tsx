@@ -31,7 +31,7 @@ export default function LoginForm() {
 
       setCurrentUser({
         userRole: data.role
-      }); 
+      });
       router.replace("/");
     },
     (error) => {

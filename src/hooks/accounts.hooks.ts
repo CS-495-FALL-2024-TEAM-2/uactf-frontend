@@ -11,12 +11,13 @@ export const useLogin = (
 } => {
     const login = async (request_body: LoginRequest) => {
         const response = await fetch(
-            `${BASE_API_URI}/auth/login`, 
+            `${BASE_API_URI}/auth/login`,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(request_body),
             }
         );
@@ -51,7 +52,10 @@ export const useGetUserRole = () : {
     const { isPending, error, data} = useQuery({
         queryKey: ['auth', 'role'],
         queryFn: async () => {
-            const response = await fetch(endpoint);
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                credentials: 'include',
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok')
             }
