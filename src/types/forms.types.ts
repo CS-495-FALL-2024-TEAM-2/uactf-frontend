@@ -37,5 +37,4 @@ export type AddTeamFormData = {
 
 export type CDMemberRegisterFormData = {
   email: string;
-  password: string;
 }
