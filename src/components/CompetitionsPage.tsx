@@ -1,38 +1,10 @@
-import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+"use client"
+
+import { useGetCompetitions } from "@/hooks/competitions.hooks";
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default function CompetitionsPage(){
-    const competitions = [
-        {
-            id: 1,
-            name: 'Capture the Flag 2023',
-            registration_deadline: "October 20, 2023",
-            is_active: true,
-        },
-        {
-            id: 2,
-            name: 'Capture the Flag 2022',
-            registration_deadline: "October 20, 2023",
-            is_active: false,
-        },
-        {
-            id: 3,
-            name: 'Capture the Flag 2021',
-            registration_deadline: "October 20, 2021",
-            is_active: false,
-        },
-        {
-            id: 4,
-            name: 'Capture the Flag 2020',
-            registration_deadline: "October 20, 2020",
-            is_active: false,
-        },
-        {
-            id: 5,
-            name: 'Capture the Flag 2019',
-            registration_deadline: "October 20, 2019",
-            is_active: false,
-        },
-    ];
+    const {isPending, error, data} = useGetCompetitions();
     return (
         <Box
             className="p-8"
@@ -43,29 +15,39 @@ export default function CompetitionsPage(){
             </Flex>
 
             <SimpleGrid className="mt-4" spacing={4} columns={{sm: 1, md: 2, xl: 3}}>
-            {
-                competitions.map((competition) => {
-                    return (
-                        <Card variant="outline" key={competition.id}>
-                            <CardHeader>
-                                <Heading size='md'>{competition.name}</Heading>
-                            </CardHeader>
-                            <CardBody>
-                                <Text>Registration deadline: {competition.registration_deadline}</Text>
-                                <Text>Currently ongoing: {competition.is_active ? "Yes" : "No"}</Text>
+                {error && 
+                    <Alert status='error' className="mb-6">
+                        <AlertIcon />
+                        <AlertTitle>An error occurred!</AlertTitle>
+                        <AlertDescription>{error.message}</AlertDescription>
+                    </Alert>
+                }
+                {
+                    isPending ? <div>loading</div>
+                    
+                    :
+                    data.competitions.map((competition) => {
+                        return (
+                            <Card variant="outline" key={competition.competition_id}>
+                                <CardHeader>
+                                    <Heading size='md'>{competition.competition_name}</Heading>
+                                </CardHeader>
+                                <CardBody>
+                                    <Text>Registration deadline: {competition.registration_deadline}</Text>
+                                    <Text>Currently ongoing: {competition.is_active ? "Yes" : "No"}</Text>
 
-                            </CardBody>
-                            {
-                                competition.is_active &&
-                                <CardFooter>
-                                    <Button colorScheme="blue">Edit</Button>
-                                </CardFooter>
-                            
-                            }
-                        </Card>
-                    );
-                })
-            }
+                                </CardBody>
+                                {
+                                    competition.is_active &&
+                                    <CardFooter>
+                                        <Button colorScheme="blue">Edit</Button>
+                                    </CardFooter>
+                                
+                                }
+                            </Card>
+                        );
+                    })
+                }
             </SimpleGrid>
         </Box>
     );
