@@ -4,7 +4,49 @@ import { useGetCompetitions } from "@/hooks/competitions.hooks";
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default function CompetitionsPage(){
-    const {isPending, error, data} = useGetCompetitions();
+    // const {isPending, error, data} = useGetCompetitions();
+    const error = null;
+    const isPending = false;
+    const data = {
+        competitions: [
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2024",
+                is_active: true,
+                registration_deadline: "November 29th, 2024"
+            },
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2023",
+                is_active: false,
+                registration_deadline: "November 29th, 2023"
+            },
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2022",
+                is_active: false,
+                registration_deadline: "November 29th, 2022"
+            },
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2021",
+                is_active: false,
+                registration_deadline: "November 29th, 2021"
+            },
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2020",
+                is_active: false,
+                registration_deadline: "November 29th, 2020"
+            },
+            {
+                competition_id: 1,
+                competition_name: "Capture the Flag 2019",
+                is_active: false,
+                registration_deadline: "November 29th, 2019"
+            }
+        ]
+    }
     return (
         <Box
             className="p-8"
