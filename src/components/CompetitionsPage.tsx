@@ -1,6 +1,7 @@
 "use client"
 
-import { useGetCompetitions } from "@/hooks/competitions.hooks";
+import Link from "next/link";
+// import { useGetCompetitions } from "@/hooks/competitions.hooks";
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default function CompetitionsPage(){
@@ -53,7 +54,10 @@ export default function CompetitionsPage(){
         >
             <Flex className="w-full" justifyContent="space-between" flexDirection={{base: "column", md:"row"}}>
                 <Heading>Competitions</Heading>
-                <Button colorScheme="green" className="mt-4 md:mt-0">Create competition</Button>
+                <Link href="/competitions/create">
+                    <Button colorScheme="green" className="mt-4 md:mt-0">Create competition</Button>
+                </Link>
+                
             </Flex>
 
             <SimpleGrid className="mt-4" spacing={4} columns={{sm: 1, md: 2, xl: 3}}>
@@ -78,18 +82,18 @@ export default function CompetitionsPage(){
                                     <Text>Registration deadline: {competition.registration_deadline}</Text>
                                     <Text>Currently ongoing: {competition.is_active ? "Yes" : "No"}</Text>
 
-                                </CardBody>
-                                {
-                                    competition.is_active &&
-                                    <CardFooter>
-                                        <Button colorScheme="blue">Edit</Button>
-                                    </CardFooter>
-                                
-                                }
-                            </Card>
-                        );
-                    })
-                }
+                            </CardBody>
+                            {
+                                competition.is_active &&
+                                <CardFooter>
+                                    <Button colorScheme="blue">Edit</Button>
+                                </CardFooter>
+                            
+                            }
+                        </Card>
+                    );
+                })
+            }
             </SimpleGrid>
         </Box>
     );
