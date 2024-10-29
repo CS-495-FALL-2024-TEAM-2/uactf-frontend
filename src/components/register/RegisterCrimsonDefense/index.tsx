@@ -30,7 +30,6 @@ export default function RegisterCrimsonDefense() {
       createCDMember({
         competition_id: '1', // TODO: Update this to the actual competition id
         email: cdMemberFormInput.email,
-        password: cdMemberFormInput.password,
         role: 'crimson_defense',
       });
     }
