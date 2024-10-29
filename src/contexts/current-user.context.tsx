@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 
 export type CurrentUserContextObjectType = {
@@ -17,12 +17,10 @@ export const CurrentUserContext = createContext<CurrentUserContextType>({
 });
 
 export function useGetCurrentUser(){
-    const {currentUser, setCurrentUser} = useContext(CurrentUserContext);
-    
+    let {currentUser, setCurrentUser} = useContext(CurrentUserContext);    
     
     useEffect(() => {
         if (currentUser == null){
-    
           // this assumes we already have valid access and refresh tokens stored in cookies
           // if the api call fails, we would simply redirect to /login
           //simulate api call
@@ -33,15 +31,14 @@ export function useGetCurrentUser(){
             userId: "1",
             userRole: "admin"
           };
-    
-          console.log("hey");
-    
+        
           setCurrentUser(apiResponse);
         }    
 
-        console.log("useGetCurrentUser")
-    }, []);
-    return currentUser
+    }, [currentUser]);
+
+    return useContext(CurrentUserContext).currentUser;
+    // return currentUser
 }
 
 
