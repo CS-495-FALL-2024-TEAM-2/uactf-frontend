@@ -1,6 +1,6 @@
-import { Competition } from "@/types/competitions.types"
+import { Competition, CreateCompetitionRequest } from "@/types/competitions.types"
 import { BASE_API_URI } from "@/utils/constants";
-import { useQuery } from "@tanstack/react-query";
+import { UseMutateFunction, useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetCompetitions = (isCurrent?: boolean) : {
     isPending: boolean,
