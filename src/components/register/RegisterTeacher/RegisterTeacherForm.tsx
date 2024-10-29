@@ -169,7 +169,7 @@ export default function RegisterTeacherForm({
               </GridItem>
               <GridItem>
                 <Input
-                  type="text"
+                  type="email"
                   name="email"
                   id="email"
                   onChange={handleInputChange}
