@@ -1,7 +1,6 @@
 export type CreateCrimsonDefenseRequest = {
   competition_id: string;
   email: string;
-  password: string;
   role: string;
 };
 
