@@ -1,5 +1,5 @@
-"use client"
-import React from "react";
+'use client';
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -8,60 +8,92 @@ import {
   TableRow,
   TableCell,
   SortDescriptor,
-  Selection
-} from "@nextui-org/table";
+  Selection,
+} from '@nextui-org/table';
 import {
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-} from "@nextui-org/dropdown";
-import {Pagination} from "@nextui-org/pagination"
-import { Button, Input, Select } from "@chakra-ui/react";
-import { mockChallenges } from "../utils/mockData/challengesData";
-import { columns, ListChallenges } from "../types/challenges.types";
-import Link from "next/link";
-import useScreenSize from "@/utils/getScreenSize";
-import { useRouter } from "next/navigation";
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+} from '@nextui-org/dropdown';
+import { Pagination } from '@nextui-org/pagination';
+import { Button, Input, Select } from '@chakra-ui/react';
+import { ListChallenges } from '../types/challenges.types';
+import Link from 'next/link';
+import useScreenSize from '@/utils/getScreenSize';
+import { useRouter } from 'next/navigation';
+
+const columns = [
+  { name: 'ID', uid: 'id' },
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'CATEGORY', uid: 'category', sortable: true },
+  { name: 'DESCRIPTION', uid: 'description' },
+  { name: 'POINTS', uid: 'points', sortable: true },
+];
 
 //set visible columns, for hiding IDs, sensistive info
-let visibleColumns: string[] = ["name", "category", "points"];
-const divisionOptions = [1,2]
+let visibleColumns: string[] = ['name', 'category', 'points'];
+const divisionOptions = [1, 2];
 
-export default function App({challengesData}: {challengesData: ListChallenges[]}) {
-  const [filterValue, setFilterValue] = React.useState("");
+export default function App({
+  challengesData,
+}: {
+  challengesData: ListChallenges[];
+}) {
+  const [filterValue, setFilterValue] = React.useState('');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [divisionFilter, setDivisionFilter] = React.useState<Selection>("all");
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "age",
-    direction: "ascending",
+  const [divisionFilter, setDivisionFilter] = React.useState<
+    Selection
+  >('all');
+  const [sortDescriptor, setSortDescriptor] = React.useState<
+    SortDescriptor
+  >({
+    column: 'age',
+    direction: 'ascending',
   });
   const screenSize = useScreenSize();
   const router = useRouter();
 
-  visibleColumns = screenSize.width < 620 ? ["name", "category", "points"] : ["name", "category", "description", "points"];
+  visibleColumns =
+    screenSize.width < 620
+      ? ['name', 'category', 'points']
+      : ['name', 'category', 'description', 'points'];
 
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
     let filteredChallenges = [...challengesData];
 
     if (hasSearchFilter) {
-        filteredChallenges = filteredChallenges.filter((challenge) =>
-            challenge.challenge_name?.toLowerCase().includes(filterValue.toLowerCase()) ||
-            challenge.category?.toLowerCase().includes(filterValue.toLowerCase()) ||
-            challenge.challenge_description?.toLowerCase().includes(filterValue.toLowerCase())
+      filteredChallenges = filteredChallenges.filter(
+        (challenge) =>
+          challenge.challenge_name
+            ?.toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          challenge.category
+            ?.toLowerCase()
+            .includes(filterValue.toLowerCase()) ||
+          challenge.challenge_description
+            ?.toLowerCase()
+            .includes(filterValue.toLowerCase())
       );
     }
-    if (divisionFilter !== "all" && Array.from(divisionFilter).length !== divisionOptions.length) {
+    if (
+      divisionFilter !== 'all' &&
+      Array.from(divisionFilter).length !== divisionOptions.length
+    ) {
       filteredChallenges = filteredChallenges.filter((challenge) =>
-        challenge.division.some(div => Array.from(divisionFilter).includes(div.toString()))
+        challenge.division.some((div) =>
+          Array.from(divisionFilter).includes(div.toString())
+        )
       );
     }
     return filteredChallenges;
@@ -78,51 +110,50 @@ export default function App({challengesData}: {challengesData: ListChallenges[]}
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: ListChallenges, b: ListChallenges) => {
-      const first = a[sortDescriptor.column as keyof ListChallenges] as number;
-      const second = b[sortDescriptor.column as keyof ListChallenges] as number;
+      const first = a[
+        sortDescriptor.column as keyof ListChallenges
+      ] as number;
+      const second = b[
+        sortDescriptor.column as keyof ListChallenges
+      ] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((challengesData: ListChallenges, columnKey: React.Key) => {
-    const cellValue = challengesData[columnKey as keyof ListChallenges];
+  const renderCell = React.useCallback(
+    (challengesData: ListChallenges, columnKey: React.Key) => {
+      const cellValue =
+        challengesData[columnKey as keyof ListChallenges];
 
-    switch (columnKey) {
-      case "name":
-        return (
-          <div>
-            {challengesData.challenge_name}
-          </div>
-        );
-      case "category":
-        return (
-          <div>
-            {challengesData.category}
-          </div>
-        );
-      case "description":
-        return (
-          <div className="truncate max-w-xs md:max-w-md lg:max-w-xl">
-            {challengesData.challenge_description}
-          </div>
-        );
-      case "points":
-        return (
-          <div>
-            {challengesData.points}
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case 'name':
+          return <div>{challengesData.challenge_name}</div>;
+        case 'category':
+          return <div>{challengesData.category}</div>;
+        case 'description':
+          return (
+            <div className="truncate max-w-xs md:max-w-md lg:max-w-xl">
+              {challengesData.challenge_description}
+            </div>
+          );
+        case 'points':
+          return <div>{challengesData.points}</div>;
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
 
-  const onRowsPerPageChange = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
   const onSearchChange = (event: any) => {
     const value = event.target.value;
@@ -130,7 +161,7 @@ export default function App({challengesData}: {challengesData: ListChallenges[]}
       setFilterValue(value);
       setPage(1);
     } else {
-      setFilterValue("");
+      setFilterValue('');
     }
   };
 
@@ -159,30 +190,33 @@ export default function App({challengesData}: {challengesData: ListChallenges[]}
                 onSelectionChange={setDivisionFilter}
               >
                 {divisionOptions.map((division) => (
-                  <DropdownItem key={division} textValue={division.toString()} className="capitalize">
+                  <DropdownItem
+                    key={division}
+                    textValue={division.toString()}
+                    className="capitalize"
+                  >
                     {division}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
             {/* TODO: add a condition for if user does not access to edit challenges when auth is set up */}
-            {true ?
-            <Link href="/challenges/add">
-              <Button color="primary">
-                Add New Challenge
-              </Button>
-            </Link>
-            : ''}
+            {true ? (
+              <Link href="/challenges/add">
+                <Button color="primary">Add New Challenge</Button>
+              </Link>
+            ) : (
+              ''
+            )}
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {challengesData.length} challenges</span>
+          <span className="text-default-400 text-small">
+            Total {challengesData.length} challenges
+          </span>
           <label className="flex items-center gap-2 text-default-400 text-small text-nowrap">
             Rows per page:
-            <Select
-              size={'sm'}
-              onChange={onRowsPerPageChange}
-            >
+            <Select size={'sm'} onChange={onRowsPerPageChange}>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -228,28 +262,41 @@ export default function App({challengesData}: {challengesData: ListChallenges[]}
         topContent={topContent}
         topContentPlacement="outside"
         onSortChange={setSortDescriptor}
-        selectionMode="single" 
-        onSelectionChange={(selected) => selected != undefined ? router.push(`/challenges/view/${new Set(selected).values().next().value}`) : ''}
-        >
+        selectionMode="single"
+        onSelectionChange={(selected) =>
+          selected != undefined
+            ? router.push(
+                `/challenges/view/${
+                  new Set(selected).values().next().value
+                }`
+              )
+            : ''
+        }
+      >
         <TableHeader columns={headerColumns}>
-            {(column) => (
+          {(column) => (
             <TableColumn
-                key={column.uid}
-                align="start"
-                allowsSorting={column.sortable}
+              key={column.uid}
+              align="start"
+              allowsSorting={column.sortable}
             >
-                {column.name}
+              {column.name}
             </TableColumn>
-            )}
+          )}
         </TableHeader>
-        <TableBody emptyContent={"No challenges found"} items={sortedItems}>
-            {(item) => (
+        <TableBody
+          emptyContent={'No challenges found'}
+          items={sortedItems}
+        >
+          {(item) => (
             <TableRow key={item.challenge_id}>
-                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
             </TableRow>
-            )}
+          )}
         </TableBody>
-        </Table>
+      </Table>
     </div>
   );
 }

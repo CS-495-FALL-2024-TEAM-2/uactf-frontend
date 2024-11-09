@@ -40,11 +40,3 @@ export type ListChallenges = {
     points: number,
     division: number[],
 }
-
-export const columns = [
-    {name: "ID", uid: "id"},
-    {name: "NAME", uid: "name", sortable: true},
-    {name: "CATEGORY", uid: "category", sortable: true},
-    {name: "DESCRIPTION", uid: "description"},
-    {name: "POINTS", uid: "points", sortable: true},
-]

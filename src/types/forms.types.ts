@@ -32,6 +32,7 @@ export type CreateStudentFormData = {
 export type AddTeamFormData = {
   division: number[];
   is_virtual: boolean;
+  name : string;
   team_members: CreateStudentFormData[];
 }
 

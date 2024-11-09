@@ -26,6 +26,7 @@ export default function AddTeamForm({
   const [formData, setFormData] = React.useState<AddTeamFormData>({
     division: [1],
     is_virtual: false,
+    name: '',
     team_members: [
       {
         first_name: '',
@@ -138,6 +139,20 @@ export default function AddTeamForm({
           >
             Virtual
           </Button>
+
+          <hr />
+
+          <FormControl isRequired>
+            <FormLabel>Team Name</FormLabel>
+            <Input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
+          </FormControl>
 
           <Box>
             {formData.team_members.map((team_member, i) => (
