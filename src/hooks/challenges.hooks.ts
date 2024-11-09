@@ -89,3 +89,39 @@ export const useGetChallengeDetails = (challenge_id: string) : {
 
     return {isPending, error, data};
 }
+
+export const useDeleteChallenge = (
+    onSuccessFn?: ((data: any, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined,
+    onErrorFn?: ((error: Error, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined
+): {
+    mutate: UseMutateFunction<any, Error, string, unknown>,
+    isPending: boolean;
+} => {
+    const deleteChallenge = async (challenge_id: string) => {
+        const response = await fetch(
+            `${BASE_API_URI}/challenges/${challenge_id}`, 
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Error deleting challenge. Please try again');
+        }
+
+        return await response.json();
+    };
+
+    // mutation
+    const deleteChallengeMutation = useMutation({
+        mutationFn: deleteChallenge,
+        onSuccess: onSuccessFn,
+        onError: onErrorFn,
+    });
+
+    return {mutate: deleteChallengeMutation.mutate, isPending: deleteChallengeMutation.isPending};
+}
