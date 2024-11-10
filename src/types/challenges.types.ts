@@ -32,6 +32,10 @@ export type CreateChallengeRequest = {
     // file_attachment: File | null;
 };
 
+export type UpdateChallengeRequest = CreateChallengeRequest & {
+    challenge_id: string;
+};
+
 export type ListChallenges = {
     challenge_id: string;
     challenge_name: string,

@@ -37,7 +37,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 {data.challenge.challenge_name.toUpperCase()}
             </Heading>
             <Flex className="mb-4">
-                <Button colorScheme="blue" className="mr-4">Update</Button>
+                <Button colorScheme="blue" className="mr-4" onClick={() => {router.push(`/challenges/update/${params.id}`)}}>Update</Button>
                 <Button colorScheme="red" onClick={onOpen}>Delete</Button>
             </Flex>
             <div className="w-full max-w-96">
