@@ -112,3 +112,42 @@ export const useLogin = (
 
     return {mutate: loginMutation.mutate, isPending: loginMutation.isPending};
 };
+
+export const useForgotPassword = (
+    onSuccessFn?: ((data: any, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined,
+    onErrorFn?: ((error: Error, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined
+) : {
+    isPending: boolean
+    mutate: UseMutateFunction<any, Error, string, unknown>
+} => {
+    const forgotPassword = async (email_address: string) => {
+        const response = await fetch(
+            `${BASE_API_URI}/auth/forgot-password`, 
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    "email": email_address
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Error sending new password. Please try again');
+        }
+
+        return await response.json();
+    };
+
+    // mutation
+    const forgotPasswordMutation = useMutation({
+        mutationFn: forgotPassword,
+        onSuccess: onSuccessFn,
+        onError: onErrorFn,
+    });
+
+    return {mutate: forgotPasswordMutation.mutate, isPending: forgotPasswordMutation.isPending};
+};
