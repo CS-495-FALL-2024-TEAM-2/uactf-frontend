@@ -87,8 +87,8 @@ export default function AdminNavbar() {
                   </Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link href="/teams">
-                    Teams
+                  <Link href="/teachers">
+                    Teachers
                   </Link>
                 </MenuItem>
               </MenuList>
@@ -109,9 +109,9 @@ export default function AdminNavbar() {
                     Challenges
                   </Button>
                 </Link>
-                <Link href="/teams">
+                <Link href="/teachers">
                   <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
-                    Teams
+                    Teachers
                   </Button>
                 </Link>
                 <NavbarThemeMenuItem />

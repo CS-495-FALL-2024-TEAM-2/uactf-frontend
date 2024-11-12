@@ -2,7 +2,7 @@ import { TeamData } from '@/types/teams.types';
 import { StudentInfo } from '@/types/userInfo.types';
 import useScreenSize from '@/utils/getScreenSize';
 import { membersData } from '@/utils/mockData/teamsData';
-import { Input, Text } from '@chakra-ui/react';
+import { Button, Input, Text } from '@chakra-ui/react';
 import {
   SortDescriptor,
   Table,
@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/table';
+import Link from 'next/link';
 import React from 'react';
 
 const columns = [
@@ -21,7 +22,7 @@ const columns = [
   { name: 'VERIFIED', uid: 'is_verified' },
 ];
 
-export default function TeamTable({
+export default function TeamsTable({
   teamData,
 }: {
   teamData: TeamData;
@@ -116,12 +117,14 @@ export default function TeamTable({
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="w-48">
+      <div className="flex flex-row justify-around gap-2">
         <Input
-          className="w-full"
           placeholder="Search by name..."
           onChange={onSearchChange}
         />
+        <Link href="/challenges/add">
+          <Button color="primary" onClick={() => console.log("Move to edit this team page")}>Edit Team</Button>
+        </Link>
       </div>
     );
   }, [onSearchChange]);
