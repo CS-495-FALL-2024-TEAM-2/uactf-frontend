@@ -1,4 +1,4 @@
-import { Challenges, CreateChallengeRequest } from "@/types/challenges.types";
+import { Challenges, CreateChallengeRequest, UpdateChallengeRequest } from "@/types/challenges.types";
 import { UseMutateFunction, useMutation, useQuery } from "@tanstack/react-query";
 import { BASE_API_URI } from "@/utils/constants";
 
@@ -66,7 +66,7 @@ export const useGetChallenges = (year?: number) : {
     return {isPending, error, data};
 }
 
-export const useGetChallengeDetails = (challenge_id: string) : {
+export const useGetChallengeDetails = (challenge_id: string, enabled: boolean = true) : {
     isPending: boolean,
     error: Error | null,
     data: {
@@ -84,7 +84,8 @@ export const useGetChallengeDetails = (challenge_id: string) : {
                 throw new Error('Network response was not ok')
             }
             return response.json();
-        }
+        },
+        enabled: enabled
     });
 
     return {isPending, error, data};
@@ -124,4 +125,42 @@ export const useDeleteChallenge = (
     });
 
     return {mutate: deleteChallengeMutation.mutate, isPending: deleteChallengeMutation.isPending};
+}
+
+// TODO: update api endpoint
+export const useUpdateChallenge = (
+    onSuccessFn?: ((data: any, variables: UpdateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined,
+    onErrorFn?: ((error: Error, variables: UpdateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined
+): {
+    mutate: UseMutateFunction<any, Error, UpdateChallengeRequest, unknown>,
+    isPending: boolean;
+} => {
+    const updateChallenge = async (request_body: UpdateChallengeRequest) => {
+        const response = await fetch(
+            `${BASE_API_URI}/challenges/${request_body.challenge_id}`, 
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request_body),
+                credentials: 'include',
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Error updating challenge. Please try again');
+        }
+
+        return await response.json();
+    };
+
+    // mutation
+    const updateChallengeMutation = useMutation({
+        mutationFn: updateChallenge,
+        onSuccess: onSuccessFn,
+        onError: onErrorFn,
+    });
+
+    return {mutate: updateChallengeMutation.mutate, isPending: updateChallengeMutation.isPending};
 }

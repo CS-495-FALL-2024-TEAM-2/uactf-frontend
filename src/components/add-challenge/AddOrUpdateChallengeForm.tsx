@@ -1,12 +1,18 @@
 "use client"
 
-import { useCreateChallenge } from "@/hooks/challenges.hooks";
+import { useCreateChallenge, useGetChallengeDetails } from "@/hooks/challenges.hooks";
 import { CreateChallengeRequest } from "@/types/challenges.types";
 import { CreateChallengeFormData } from "@/types/forms.types";
 import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from 'prop-types'
 
-export default function AddChallengeForm(){
+
+
+export default function AddOrUpdateChallengeForm(
+    {isUpdateChallenge = false, challengeId}:
+    {isUpdateChallenge?: boolean, challengeId?: string}
+){
     const defaultFormValues: CreateChallengeFormData = {
         challenge_name: '',
         challenge_description: '',
@@ -26,6 +32,36 @@ export default function AddChallengeForm(){
     const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
 
     const toast = useToast();
+
+    const {error, data} = useGetChallengeDetails(challengeId ?? "", challengeId !== undefined);
+        
+    useEffect(() => {
+        if (error){
+            toast({
+                title: 'Error fetching challenge details',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+
+        if (data){
+            const {challenge} = data;
+            setFormData({
+                challenge_name: challenge.challenge_name,
+                challenge_description: challenge.challenge_name,
+                flag: challenge.flag,
+                is_flag_case_sensitive: challenge.is_flag_case_sensitive,
+                division: JSON.stringify(challenge.division),
+                points: challenge.points,
+                challenge_category: challenge.category,
+                solution_explanation: challenge.solution_explanation ?? '',
+                hints: challenge.hints,
+            });
+        }
+
+        
+    }, [data]);
 
     const {mutate: createChallenge, isPending: createChallengeIsPending} = useCreateChallenge(
         (data) => {
@@ -75,22 +111,19 @@ export default function AddChallengeForm(){
             return;
         }
 
-        const map_division_form_value_to_backend_value: {
-            [key: string]: number[];
-        } = {
-            'all': [1,2],
-            '1': [1],
-            '2': [2]
-        }
 
         const request_body: CreateChallengeRequest = {
             ...formData,
             creator_name: '', // TODO: put actual user name
-            division: map_division_form_value_to_backend_value[formData.division],
+            division: JSON.parse(formData.division),
             verified: false // TODO: this will automatically be true for super-admins and false for ua cd members
         }
-        
-        createChallenge(request_body);
+
+        if (isUpdateChallenge){
+            
+        } else {
+            createChallenge(request_body);
+        }
     }
 
 
@@ -133,9 +166,9 @@ export default function AddChallengeForm(){
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Division</Text>
                 <Select placeholder='Select division' name="division" value={formData.division} onChange={handleInputChange} required>
-                    <option value='all'>Both</option>
-                    <option value='1'>Division 1</option>
-                    <option value='2'>Division 2</option>
+                    <option value='[1,2]'>Both</option>
+                    <option value='[1]'>Division 1</option>
+                    <option value='[2]'>Division 2</option>
                 </Select>
             </Box>
 
@@ -255,3 +288,14 @@ export default function AddChallengeForm(){
         </form>
     );
 }
+
+AddOrUpdateChallengeForm.propTypes = {
+    isUpdateChallenge: PropTypes.bool,
+    challengeId: function(props: { [key: string]: any }, propName: string, componentName: string) {
+        if (props.isUpdateChallenge === true && props[propName] == null) {
+            return new Error(
+            `Invalid prop \`${propName}\` supplied to \`${componentName}\`. When \`isUpdateChallenge\` is true, \`${propName}\` cannot be null.`
+            );
+        }
+    }
+};

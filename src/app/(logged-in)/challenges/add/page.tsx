@@ -1,4 +1,4 @@
-import AddChallengeForm from "@/components/add-challenge/AddChallengeForm";
+import AddChallengeForm from "@/components/add-challenge/AddOrUpdateChallengeForm";
 import { Stack, Heading} from "@chakra-ui/react";
 
 import * as React from "react";
