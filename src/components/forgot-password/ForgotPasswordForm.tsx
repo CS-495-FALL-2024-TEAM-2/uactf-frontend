@@ -1,12 +1,12 @@
 'use client';
 
 import { CurrentUserContext, CurrentUserContextObjectType } from '@/contexts/current-user.context';
-import { useLogin } from '@/hooks/accounts.hooks';
+import { useForgotPassword, useLogin } from '@/hooks/accounts.hooks';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
   Button,
   Center,
   FormControl,
@@ -14,31 +14,29 @@ import {
   Input,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 
-export default function LoginForm() {
+export default function ForgotPasswordForm() {
   const [email, setEmail] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
-
-
-  const {setCurrentUser} = useContext(CurrentUserContext);
 
   const [formErrorAlert, setFormErrorAlert] = useState<string | null>();
 
   const router = useRouter();
 
-  const { mutate: login, isPending: loginIsPending } = useLogin(
-    (data) => {
-      console.log(data);
-      setFormErrorAlert(null);
+  const toast = useToast();
 
-      setCurrentUser({
-        userRole: data.role
-      }); 
-      router.replace("/");
+  const { mutate: forgotPassword, isPending: forgotPasswordIsPending } = useForgotPassword(
+    (data) => {
+        toast({
+            title: 'A new password has been sent to your email. Use it to login!',
+            status: 'success',
+            duration: 7000,
+            isClosable: true,
+        });
     },
     (error) => {
       setFormErrorAlert(error.message);
@@ -46,7 +44,7 @@ export default function LoginForm() {
   );
 
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleForgotPassword = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
     e.preventDefault();
 
@@ -56,20 +54,17 @@ export default function LoginForm() {
       return;
     }
 
-    login({
-      email: email,
-      password: password
-    });
-
-    // set value in context
-    console.log('Login form submitted', { email, password });
+    forgotPassword(email);
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleForgotPassword}>
       <Stack spacing={4}>
         <Text fontSize="3xl" as="b" textAlign="center" color="UA_red">
-          Login
+          Forgot Password
+        </Text>
+        <Text as="small" textAlign="center">
+          We will send a new password to your email if you already have an account with us
         </Text>
         {formErrorAlert && 
             <Alert status='error' className="mb-6">
@@ -78,6 +73,7 @@ export default function LoginForm() {
                 <AlertDescription>{formErrorAlert}</AlertDescription>
             </Alert>
         }
+
         <FormControl isRequired>
           <FormLabel>Email Address</FormLabel>
           <Input
@@ -87,27 +83,18 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.currentTarget.value)}
           />
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.currentTarget.value)}
-          />
-        </FormControl>
         <Button
           type="submit"
           bg="bama_gray"
           color="black"
           width="full"
-          isLoading={loginIsPending}
+          isLoading={forgotPasswordIsPending}
         >
-          Login
+          Send new password
         </Button>
 
         <Center>
-          <Link href="/forgot-password">Forgot Password?</Link>
+          <Link href="/login">Go back to login</Link>
         </Center>
         
       </Stack>
