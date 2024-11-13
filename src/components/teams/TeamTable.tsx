@@ -26,7 +26,7 @@ export default function TeamTable({
 }: {
   teamData: TeamWithStudents;
 }) {
-  const membersData = teamData.students || [];
+  const membersData = teamData.students;
 
   const [filterValue, setFilterValue] = React.useState('');
   const [sortDescriptor, setSortDescriptor] = React.useState<
