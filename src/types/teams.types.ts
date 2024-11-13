@@ -1,3 +1,5 @@
+import { StudentInfo } from "./userInfo.types";
+
 export type TeamData = {
   id: string;
   teacher_id: string;
@@ -5,5 +7,8 @@ export type TeamData = {
   name: string;
   division: number;
   is_virtual: boolean;
-  is_verified: boolean;
+}
+
+export type TeamWithStudents = TeamData & {
+  students: StudentInfo[];
 }

@@ -1,6 +1,6 @@
 import { TeacherInfo } from '@/types/userInfo.types';
 import useScreenSize from '@/utils/getScreenSize';
-import { Input } from '@chakra-ui/react';
+import { Input, Text } from '@chakra-ui/react';
 import {
   SortDescriptor,
   Table,
@@ -137,7 +137,15 @@ export default function TeachersTable({
   }, [onSearchChange]);
 
   return (
-    <div className="p-2">
+    <div className="flex flex-col p-2 gap-5">
+      <div>
+        <Text fontSize="2xl" as="b">
+          Teachers
+        </Text>
+        <Text fontSize="sm">
+          Click on the row to see their teams details
+        </Text>
+      </div>
       <Table
         aria-label="Table listing teachers and their teams info"
         isHeaderSticky

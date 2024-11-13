@@ -25,7 +25,7 @@ export type TeacherRegisterFormData = {
 export type CreateStudentFormData = {
   first_name: string;
   last_name: string;
-  email: string;
+  email?: string;
   shirt_size: string;
 }
 

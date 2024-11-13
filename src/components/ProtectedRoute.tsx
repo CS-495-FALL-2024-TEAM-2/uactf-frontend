@@ -57,7 +57,7 @@ export default function ProtectedRoute({ children }: {
     );
   }
 
-  return <div>Loading...</div>;
+  return <></>;
 
 
 }
