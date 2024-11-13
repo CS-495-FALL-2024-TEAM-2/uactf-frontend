@@ -1,6 +1,6 @@
 import { TeacherInfo } from '@/types/userInfo.types';
 import useScreenSize from '@/utils/getScreenSize';
-import { Input, Text } from '@chakra-ui/react';
+import { Button, Input, Select, Text } from '@chakra-ui/react';
 import {
   SortDescriptor,
   Table,
@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/table';
+import Link from 'next/link';
 import React from 'react';
 
 const columns = [
@@ -17,15 +18,17 @@ const columns = [
   { name: 'FIRST NAME', uid: 'first_name', sortable: true },
   { name: 'LAST NAME', uid: 'last_name', sortable: true },
   { name: 'SCHOOL NAME', uid: 'school_name', sortable: true },
+  { name: 'SCHOOL ADDRESS', uid: 'school_address', sortable: true },
+  { name: 'SCHOOL WEBSITE', uid: 'school_website', sortable: true },
   { name: 'SHIRT SIZE', uid: 'shirt_size', sortable: true },
   { name: 'CONTACT NUMBER', uid: 'contact_number', sortable: true },
-  { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'VIEW DETAILS', uid: 'view_details' },
 ];
 
 export default function TeachersTable({
-  teachersList,
+  teachersData,
 }: {
-  teachersList: TeacherInfo[];
+  teachersData: TeacherInfo[];
 }) {
   const [filterValue, setFilterValue] = React.useState('');
   const [sortDescriptor, setSortDescriptor] = React.useState<
@@ -34,19 +37,23 @@ export default function TeachersTable({
     column: 'name',
     direction: 'ascending',
   });
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(1);
 
   const screenSize = useScreenSize();
 
   const visibleColumns =
     screenSize.width < 620
-      ? ['first_name', 'last_name', 'school_name', 'shirt_size']
+      ? ['first_name', 'last_name', 'school_name', 'shirt_size', 'view_details']
       : [
           'first_name',
           'last_name',
           'school_name',
+          'school_address',
+          'school_website',
           'shirt_size',
           'contact_number',
-          'email',
+          'view_details',
         ];
 
   const headerColumns = React.useMemo(() => {
@@ -56,7 +63,7 @@ export default function TeachersTable({
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredTeachers = [...teachersList];
+    let filteredTeachers = [...teachersData];
 
     if (filterValue) {
       filteredTeachers = filteredTeachers.filter(
@@ -75,8 +82,16 @@ export default function TeachersTable({
     return filteredTeachers;
   }, [filterValue]);
 
+  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return filteredItems.slice(start, end);
+  }, [filteredItems, page, rowsPerPage]);
+
   const sortedItems = React.useMemo(() => {
-    return [...filteredItems].sort(
+    return [...items].sort(
       (a: TeacherInfo, b: TeacherInfo) => {
         const first = a[
           sortDescriptor.column as keyof TeacherInfo
@@ -89,28 +104,53 @@ export default function TeachersTable({
         return sortDescriptor.direction === 'descending' ? -cmp : cmp;
       }
     );
-  }, [sortDescriptor, filteredItems]);
+  }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback(
-    (teachersData: TeacherInfo, columnKey: React.Key) => {
+    (teacherData: TeacherInfo, columnKey: React.Key) => {
       const cellValue = [columnKey as keyof TeacherInfo];
 
       switch (columnKey) {
         case 'first_name':
-          return <div>{teachersData.first_name}</div>;
+          return <div>{teacherData.first_name}</div>;
         case 'last_name':
-          return <div>{teachersData.last_name}</div>;
+          return <div>{teacherData.last_name}</div>;
         case 'school_name':
-          return <div>{teachersData.school_name}</div>;
+          return <div>{teacherData.school_name}</div>;
+        case 'school_address':
+          return <div>{teacherData.school_address}</div>;
+        case 'school_website':
+          return (
+            <div
+              className="underline cursor-pointer"
+              onClick={() => {
+                window.open(teacherData.school_website, '_blank');
+              }}
+            >
+              Link
+            </div>
+          );
         case 'shirt_size':
-          return <div>{teachersData.shirt_size}</div>;
+          return <div>{teacherData.shirt_size}</div>;
         case 'contact_number':
-          return <div>{teachersData.contact_number}</div>;
-        case 'email':
-          return <div>{teachersData.email}</div>;
+          return <div>{teacherData.contact_number}</div>;
+        case 'view_details':
+          return (
+            <Link href={`/teachers/${teacherData.id}`}>
+              <Button colorScheme="blue" size="sm">View Details</Button>
+            </Link>
+          );
         default:
           return cellValue.toString();
       }
+    },
+    []
+  );
+
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
     },
     []
   );
@@ -126,26 +166,31 @@ export default function TeachersTable({
 
   const topContent = React.useMemo(() => {
     return (
-      <div>
+      <div className="flex flex-col gap-4">
         <Input
-          className="w-48"
+          className="w-56"
           placeholder="Search by name and school name..."
           onChange={onSearchChange}
         ></Input>
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {teachersData.length} teachers
+          </span>
+          <label className="flex items-center gap-2 text-default-400 text-small text-nowrap">
+            Rows per page:
+            <Select size={'sm'} onChange={onRowsPerPageChange}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </Select>
+          </label>
+        </div>
       </div>
     );
   }, [onSearchChange]);
 
   return (
     <div className="flex flex-col p-2 gap-5">
-      <div>
-        <Text fontSize="2xl" as="b">
-          Teachers
-        </Text>
-        <Text fontSize="sm">
-          Click on the row to see their teams details
-        </Text>
-      </div>
       <Table
         aria-label="Table listing teachers and their teams info"
         isHeaderSticky
@@ -154,14 +199,6 @@ export default function TeachersTable({
         topContentPlacement="outside"
         onSortChange={setSortDescriptor}
         selectionMode="single"
-        onSelectionChange={(selected) =>
-          selected !== undefined
-            ? console.log(
-                'See teams for',
-                new Set(selected).values().next().value
-              )
-            : null
-        }
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -170,7 +207,7 @@ export default function TeachersTable({
               align="start"
               allowsSorting={column.sortable}
             >
-              {column.name}
+              {column.name != "VIEW DETAILS" && column.name}
             </TableColumn>
           )}
         </TableHeader>

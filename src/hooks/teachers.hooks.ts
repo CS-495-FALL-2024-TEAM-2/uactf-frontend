@@ -1,19 +1,19 @@
-import { TeamWithStudents } from "@/types/teams.types"
+import { TeacherInfo } from "@/types/userInfo.types"
 import { BASE_API_URI } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTeams = (teacher_id?: string) : {
+export const useGetTeachers = () : {
   isPending: boolean,
   error: Error | null,
   data: {
-    teams: TeamWithStudents[]
+    teachers: TeacherInfo[]
   }
 } => {
-  const endpoint = `${BASE_API_URI}/teams/get?teacher_id=${teacher_id || ''}`;
+  const endpoint = `${BASE_API_URI}/teachers/get/all`;
 
   // query
   const { isPending, error, data} = useQuery({
-    queryKey: ['teams', 'teacher', teacher_id],
+    queryKey: ['teachers'],
     queryFn: async () => {
       const response = await fetch(endpoint, {credentials: 'include',});
       if (!response.ok) {

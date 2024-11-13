@@ -121,8 +121,8 @@ export default function TeamTable({
           placeholder="Search by name..."
           onChange={onSearchChange}
         />
-        <Link href="/challenges/add">
-          <Button color="primary" onClick={() => console.log("Move to edit this team page")}>Edit Team</Button>
+        <Link href={`/teams/edit/${teamData.id}`}>
+          <Button>Edit Team</Button>
         </Link>
       </div>
     );
