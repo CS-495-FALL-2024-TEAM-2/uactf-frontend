@@ -3,7 +3,7 @@
 import { NextUIProvider } from '@nextui-org/system';
 import TeamTable from './TeamTable';
 import { useGetTeams } from '@/hooks/teams.hooks';
-import { Spinner, Text } from '@chakra-ui/react';
+import { Button, Spinner, Text } from '@chakra-ui/react';
 
 export default function TeacherViewTeams({
   teacherId,
@@ -18,12 +18,21 @@ export default function TeacherViewTeams({
       <div className="h-full w-full flex flex-col justify-center items-center">
         <Spinner size="lg" />
       </div>
-    )
+    );
   }
 
   return (
     <NextUIProvider>
-      <div className="flex flex-col justify-center p-4 gap-2">
+      <div className="h-full flex flex-col justify-center p-4 gap-2 relative">
+        <Button
+          colorScheme="green"
+          position="absolute"
+          top={2}
+          right={2}
+          onClick={() => console.log('Move to add new team page')}
+        >
+          Add New Team
+        </Button>
         {teams.map((team) => {
           return <TeamTable key={team.id} teamData={team} />;
         })}
