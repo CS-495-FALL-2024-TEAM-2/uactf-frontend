@@ -34,7 +34,7 @@ export default function TeachersTable({
   const [sortDescriptor, setSortDescriptor] = React.useState<
     SortDescriptor
   >({
-    column: 'name',
+    column: 'first_name',
     direction: 'ascending',
   });
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
