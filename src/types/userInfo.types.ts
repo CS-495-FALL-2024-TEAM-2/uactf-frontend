@@ -17,3 +17,16 @@ export type StudentInfo = {
   liability_form: LiabilityForm;
   is_verified: boolean;
 };
+
+// Teacher type definitions
+export type TeacherInfo = {
+  id: string;
+  account_id: string;
+  first_name: string;
+  last_name: string;
+  school_name: string;
+  school_address: string;
+  school_website: string;
+  shirt_size: string;
+  contact_number: string;
+};

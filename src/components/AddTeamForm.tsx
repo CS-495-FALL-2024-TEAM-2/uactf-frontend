@@ -24,8 +24,8 @@ export default function AddTeamForm({
   setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [formData, setFormData] = React.useState<AddTeamFormData>({
-    division: [1],
-    is_virtual: false,
+    division: [2],
+    is_virtual: true,
     name: '',
     team_members: [
       {

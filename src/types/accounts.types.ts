@@ -12,6 +12,7 @@ export type CreateTeacherRequest = {
   contact_number: string;
   email: string;
 };
+
 export type LoginRequest = {
     email: string,
     password: string

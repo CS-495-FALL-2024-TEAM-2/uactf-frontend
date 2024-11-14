@@ -32,12 +32,11 @@ export default function LoginForm() {
 
   const { mutate: login, isPending: loginIsPending } = useLogin(
     (data) => {
-      console.log(data);
       setFormErrorAlert(null);
 
       setCurrentUser({
         userRole: data.role
-      }); 
+      });
       router.replace("/");
     },
     (error) => {

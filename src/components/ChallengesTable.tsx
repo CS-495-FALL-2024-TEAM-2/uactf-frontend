@@ -29,6 +29,7 @@ const columns = [
   { name: 'CATEGORY', uid: 'category', sortable: true },
   { name: 'DESCRIPTION', uid: 'description' },
   { name: 'POINTS', uid: 'points', sortable: true },
+  { name: 'VIEW DETAILS', uid: 'view_details' },
 ];
 
 //set visible columns, for hiding IDs, sensistive info
@@ -52,12 +53,11 @@ export default function App({
     direction: 'ascending',
   });
   const screenSize = useScreenSize();
-  const router = useRouter();
 
   visibleColumns =
     screenSize.width < 620
-      ? ['name', 'category', 'points']
-      : ['name', 'category', 'description', 'points'];
+      ? ['name', 'category', 'points', 'view_details']
+      : ['name', 'category', 'description', 'points', 'view_details'];
 
   const [page, setPage] = React.useState(1);
 
@@ -140,6 +140,14 @@ export default function App({
           );
         case 'points':
           return <div>{challengesData.points}</div>;
+        case 'view_details':
+          return (
+            <Link
+              href={`/challenges/view/${challengesData.challenge_id}`}
+            >
+              <Button colorScheme="blue" size="sm">View Details</Button>
+            </Link>
+          );
         default:
           return cellValue;
       }
@@ -263,15 +271,6 @@ export default function App({
         topContentPlacement="outside"
         onSortChange={setSortDescriptor}
         selectionMode="single"
-        onSelectionChange={(selected) =>
-          selected != undefined
-            ? router.push(
-                `/challenges/view/${
-                  new Set(selected).values().next().value
-                }`
-              )
-            : ''
-        }
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -280,7 +279,7 @@ export default function App({
               align="start"
               allowsSorting={column.sortable}
             >
-              {column.name}
+              {column.name != 'VIEW DETAILS' && column.name}
             </TableColumn>
           )}
         </TableHeader>

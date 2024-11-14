@@ -1,8 +1,7 @@
-import { TeamData } from '@/types/teams.types';
+import { TeamData, TeamWithStudents } from '@/types/teams.types';
 import { StudentInfo } from '@/types/userInfo.types';
 import useScreenSize from '@/utils/getScreenSize';
-import { membersData } from '@/utils/mockData/teamsData';
-import { Input, Text } from '@chakra-ui/react';
+import { Button, Input, Tag, Text } from '@chakra-ui/react';
 import {
   SortDescriptor,
   Table,
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/table';
+import Link from 'next/link';
 import React from 'react';
 
 const columns = [
@@ -24,9 +24,9 @@ const columns = [
 export default function TeamTable({
   teamData,
 }: {
-  teamData: TeamData;
+  teamData: TeamWithStudents;
 }) {
-  const mockMembers: StudentInfo[] = membersData;
+  const membersData = teamData.students;
 
   const [filterValue, setFilterValue] = React.useState('');
   const [sortDescriptor, setSortDescriptor] = React.useState<
@@ -50,7 +50,7 @@ export default function TeamTable({
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredMembers = [...mockMembers];
+    let filteredMembers = [...membersData];
 
     if (filterValue) {
       filteredMembers = filteredMembers.filter(
@@ -116,19 +116,24 @@ export default function TeamTable({
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="w-48">
+      <div className="flex flex-row justify-around gap-2">
         <Input
-          className="w-full"
           placeholder="Search by name..."
           onChange={onSearchChange}
         />
+        <Link href={`/teams/edit/${teamData.id}`}>
+          <Button>Edit Team</Button>
+        </Link>
       </div>
     );
   }, [onSearchChange]);
 
   return (
-    <div className="p-2">
-      <Text fontSize="2xl" as="b">{teamData.name}</Text>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-row items-center gap-2">
+        <Text fontSize="2xl" as="b">{teamData.name}</Text>
+        <Tag>{`${teamData.is_virtual ? "Virtual" : "In Person"}`}</Tag>
+      </div>
       <Table
         aria-label="Table listing team members info"
         isHeaderSticky
