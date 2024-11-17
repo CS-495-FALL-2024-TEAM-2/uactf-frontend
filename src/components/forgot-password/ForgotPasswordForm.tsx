@@ -33,6 +33,7 @@ export default function ForgotPasswordForm() {
     (data) => {
         toast({
             title: 'A new password has been sent to your email. Use it to login!',
+            position: 'top',
             status: 'success',
             duration: 7000,
             isClosable: true,
@@ -66,7 +67,7 @@ export default function ForgotPasswordForm() {
         <Text as="small" textAlign="center">
           We will send a new password to your email if you already have an account with us
         </Text>
-        {formErrorAlert && 
+        {formErrorAlert &&
             <Alert status='error' className="mb-6">
                 <AlertIcon />
                 <AlertTitle>An error occurred!</AlertTitle>
@@ -96,7 +97,7 @@ export default function ForgotPasswordForm() {
         <Center>
           <Link href="/login">Go back to login</Link>
         </Center>
-        
+
       </Stack>
     </form>
   );

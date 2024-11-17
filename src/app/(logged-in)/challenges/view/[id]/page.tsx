@@ -22,6 +22,7 @@ export default function Page({ params }: { params: { id: string } }) {
         (error) => {
             toast({
                 title: 'Error deleting challenge: '+error.message,
+                position: 'top',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
