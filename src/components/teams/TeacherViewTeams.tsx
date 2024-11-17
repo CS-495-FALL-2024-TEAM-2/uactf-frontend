@@ -31,7 +31,6 @@ export default function TeacherViewTeams({
             position="absolute"
             top={2}
             right={2}
-            onClick={() => console.log('Move to add new team page')}
           >
             Add New Team
           </Button>

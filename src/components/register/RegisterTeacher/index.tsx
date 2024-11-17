@@ -6,9 +6,10 @@ import {
   TeacherRegisterFormData,
 } from '@/types/forms.types';
 import RegisterTeacherForm from './RegisterTeacherForm';
-import AddTeamForm from '../../AddTeamForm';
+import AddOrUpdateTeamForm from '../../AddOrUpdateTeamForm';
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useCreateTeacher } from '@/hooks/accounts.hooks';
+import { useCreateTeam } from '@/hooks/teams.hooks';
 
 export default function RegisterTeacher() {
   const [
@@ -23,11 +24,24 @@ export default function RegisterTeacher() {
     'pending' | 'success' | 'error'
   >('pending');
 
+  const { mutate: createTeam } = useCreateTeam(
+    (data) => {
+      setTeamInfo(null);
+      setStatus('success');
+    },
+    (error) => {
+      setStatus('error');
+    }
+  )
+
   const { mutate: createTeacher } = useCreateTeacher(
     (data) => {
-      // TODO: Add team members if there are any
-      setTeacherRegisterFormInput(null);
-      setStatus('success');
+      if (teamInfo) {
+        createTeam(teamInfo);
+      } else {
+        setTeacherRegisterFormInput(null);
+        setStatus('success');
+      }
     },
     (error) => {
       setStatus('error');
@@ -62,7 +76,7 @@ export default function RegisterTeacher() {
     {
       label: 'Add Team Members',
       component: (
-        <AddTeamForm
+        <AddOrUpdateTeamForm
           setTeamInfo={setTeamInfo}
           setCurrentStep={setCurrentStep}
         />

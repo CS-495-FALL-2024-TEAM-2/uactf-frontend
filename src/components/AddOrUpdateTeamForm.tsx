@@ -17,11 +17,13 @@ import React from 'react';
 export default function AddTeamForm({
   setTeamInfo,
   setCurrentStep,
+  isPending,
 }: {
   setTeamInfo: React.Dispatch<
     React.SetStateAction<AddTeamFormData | null>
   >;
   setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
+  isPending?: boolean;
 }) {
   const [formData, setFormData] = React.useState<AddTeamFormData>({
     division: [2],
@@ -31,7 +33,7 @@ export default function AddTeamForm({
       {
         first_name: '',
         last_name: '',
-        email: '',
+        email: undefined,
         shirt_size: '',
       },
     ],
@@ -268,7 +270,9 @@ export default function AddTeamForm({
                           <option value="small">Small</option>
                           <option value="medium">Medium</option>
                           <option value="large">Large</option>
-                          <option value="extra large">Extra Large</option>
+                          <option value="extra large">
+                            Extra Large
+                          </option>
                         </Select>
                       </GridItem>
                     </Grid>
@@ -327,7 +331,12 @@ export default function AddTeamForm({
             flexDirection="row"
             justifyContent="center"
           >
-            <Button type="submit" colorScheme="blue" width={40}>
+            <Button
+              type="submit"
+              colorScheme="blue"
+              width={40}
+              isLoading={isPending ? isPending : false}
+            >
               Add This Team
             </Button>
           </Box>
