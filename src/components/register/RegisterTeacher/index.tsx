@@ -6,10 +6,10 @@ import {
   TeacherRegisterFormData,
 } from '@/types/forms.types';
 import RegisterTeacherForm from './RegisterTeacherForm';
-import AddOrUpdateTeamForm from '../../AddOrUpdateTeamForm';
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useCreateTeacher } from '@/hooks/accounts.hooks';
 import { useCreateTeam } from '@/hooks/teams.hooks';
+import AddTeamForm from '@/components/teams/AddTeamForm';
 
 export default function RegisterTeacher() {
   const [
@@ -56,6 +56,8 @@ export default function RegisterTeacher() {
         last_name: teacherRegisterFormInput.last_name,
         email: teacherRegisterFormInput.email,
         school_name: teacherRegisterFormInput.school_name,
+        school_address: teacherRegisterFormInput.school_address,
+        school_website: teacherRegisterFormInput.school_website,
         contact_number: teacherRegisterFormInput.contact_number,
         shirt_size: teacherRegisterFormInput.shirt_size,
       });
@@ -76,7 +78,7 @@ export default function RegisterTeacher() {
     {
       label: 'Add Team Members',
       component: (
-        <AddOrUpdateTeamForm
+        <AddTeamForm
           setTeamInfo={setTeamInfo}
           setCurrentStep={setCurrentStep}
         />

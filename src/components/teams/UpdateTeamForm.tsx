@@ -1,6 +1,7 @@
 'use client';
 
-import { AddTeamFormData } from '@/types/forms.types';
+import { useGetTeamDetails } from '@/hooks/teams.hooks';
+import { UpdateTeamRequest } from '@/types/teams.types';
 import {
   Box,
   Button,
@@ -11,33 +12,73 @@ import {
   Input,
   Select,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 
-export default function AddTeamForm({
+export default function UpdateTeamForm({
   setTeamInfo,
-  setCurrentStep,
   isPending,
+  isUpdateTeam,
+  teamId,
 }: {
   setTeamInfo: React.Dispatch<
-    React.SetStateAction<AddTeamFormData | null>
+    React.SetStateAction<UpdateTeamRequest | null>
   >;
-  setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   isPending?: boolean;
+  isUpdateTeam?: boolean;
+  teamId?: string;
 }) {
-  const [formData, setFormData] = React.useState<AddTeamFormData>({
+  const [formData, setFormData] = React.useState<UpdateTeamRequest>({
     division: [2],
     is_virtual: true,
     name: '',
     team_members: [
       {
+        id: '',
         first_name: '',
         last_name: '',
-        email: undefined,
-        shirt_size: '',
+        shirt_size: 'Small',
       },
     ],
   });
+
+  const toast = useToast();
+
+  const {
+    isPending: isFetchingDetails,
+    error,
+    data,
+  } = useGetTeamDetails(teamId ?? '', teamId !== undefined);
+
+  React.useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Error',
+        position: 'top',
+        description: 'Error fetching team details',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    if (data) {
+      const team = data.team;
+      setFormData({
+        division: team.division,
+        is_virtual: team.is_virtual,
+        name: team.name,
+        team_members: team.students.map((student) => ({
+          id: student.id,
+          first_name: student.first_name,
+          last_name: student.last_name,
+          email: student.email,
+          shirt_size: student.shirt_size,
+        })),
+      });
+    }
+  }, [data]);
 
   const toggleDivision = (division: number) => {
     if (formData.division.includes(division)) {
@@ -68,11 +109,6 @@ export default function AddTeamForm({
     }
 
     setTeamInfo(formData);
-
-    // Check if there's a need to set the current step
-    if (setCurrentStep) {
-      setCurrentStep(2);
-    }
   };
 
   return (
@@ -252,6 +288,7 @@ export default function AddTeamForm({
                         <Select
                           name="shirt_size"
                           id="shirt_size"
+                          value={team_member.shirt_size}
                           onChange={(e) => {
                             setFormData({
                               ...formData,
@@ -267,10 +304,10 @@ export default function AddTeamForm({
                           }}
                           required
                         >
-                          <option value="small">Small</option>
-                          <option value="medium">Medium</option>
-                          <option value="large">Large</option>
-                          <option value="extra large">
+                          <option value="Small">Small</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Large">Large</option>
+                          <option value="Extra large">
                             Extra Large
                           </option>
                         </Select>
@@ -309,9 +346,9 @@ export default function AddTeamForm({
                     team_members: [
                       ...formData.team_members,
                       {
+                        id: '',
                         first_name: '',
                         last_name: '',
-                        email: '',
                         shirt_size: '',
                       },
                     ],
@@ -337,7 +374,7 @@ export default function AddTeamForm({
               width={40}
               isLoading={isPending ? isPending : false}
             >
-              Add This Team
+              {isUpdateTeam ? 'Update This Team' : 'Add This Team'}
             </Button>
           </Box>
         </Stack>

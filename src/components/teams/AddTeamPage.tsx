@@ -2,7 +2,7 @@
 
 import { AddTeamFormData } from '@/types/forms.types';
 import React, { useEffect } from 'react';
-import AddOrUpdateTeamForm from '../AddOrUpdateTeamForm';
+import AddTeamForm from './AddTeamForm';
 import { useCreateTeam } from '@/hooks/teams.hooks';
 import { useToast } from '@chakra-ui/react';
 
@@ -18,6 +18,7 @@ export default function AddTeamPage() {
     (data) => {
       toast({
         title: 'Team created',
+        position: 'top',
         description: 'Team has been created successfully',
         status: 'success',
         duration: 3000,
@@ -28,6 +29,7 @@ export default function AddTeamPage() {
     (error) => {
       toast({
         title: 'Error creating team',
+        position: 'top',
         description: error.message,
         status: 'error',
         duration: 3000,
@@ -44,7 +46,7 @@ export default function AddTeamPage() {
 
   return (
     <div className="w-full flex flex-row justify-center">
-      <AddOrUpdateTeamForm setTeamInfo={setTeamInfo} isPending={isPending} />
+      <AddTeamForm setTeamInfo={setTeamInfo} isPending={isPending} />
     </div>
   );
 }

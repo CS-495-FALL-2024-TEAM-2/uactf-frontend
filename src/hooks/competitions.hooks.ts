@@ -13,7 +13,7 @@ export const useGetCompetitions = (isCurrent?: boolean) : {
 
     // query
     const { isPending, error, data} = useQuery({
-        queryKey: isCurrent === true ? ['competitions', 'current'] : ['competitions'],
+    queryKey: isCurrent === true ? ['competitions', 'current'] : ['competitions'],
         queryFn: async () => {
             const response = await fetch(endpoint, {credentials: 'include',});
             if (!response.ok) {
@@ -36,7 +36,7 @@ export const useCreateCompetition = (
 
     const createCompetition = async (request_body: CreateCompetitionRequest) => {
         const response = await fetch(
-            `${BASE_API_URI}/competitions/create`, 
+            `${BASE_API_URI}/competitions/create`,
             {
                 method: 'POST',
                 headers: {
