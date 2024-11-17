@@ -122,7 +122,7 @@ export const useForgotPassword = (
 } => {
     const forgotPassword = async (email_address: string) => {
         const response = await fetch(
-            `${BASE_API_URI}/auth/forgot-password`, 
+            `${BASE_API_URI}/auth/forgot/password`, 
             {
                 method: 'POST',
                 headers: {
