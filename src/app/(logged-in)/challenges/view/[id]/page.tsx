@@ -4,7 +4,7 @@ import SameLineInfoDisplay from "@/components/SameLineInfoDisplay";
 import TableInfoDisplay from "@/components/TableInfoDisplay";
 import { useDeleteChallenge, useGetChallengeDetails } from "@/hooks/challenges.hooks";
 import { Hint } from "@/types/challenges.types";
-import { Button, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure, useToast } from "@chakra-ui/react";
+import { Button, Flex, Heading, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -43,17 +43,31 @@ export default function Page({ params }: { params: { id: string } }) {
             </Flex>
             <div className="w-full max-w-96">
                 <NextLineInfoDisplay heading="Description" data={data.challenge.challenge_description}/>
-                <SameLineInfoDisplay heading="Category" data={data.challenge.category} />
+                <SameLineInfoDisplay heading="Category" data={data.challenge.challenge_category} />
                 <SameLineInfoDisplay heading="Points" data={data.challenge.points.toString()} />
                 <SameLineInfoDisplay heading="Division" data={data.challenge.division.join(", ")} />
-                { data.challenge.hints ?
+                { data.challenge.hints.length > 0 ?
                     <TableInfoDisplay heading="Hints" thead={["", "Cost"]} data={data.challenge.hints?.map((hint: Hint) => [hint.hint, hint.point_cost])} /> :
-                    <SameLineInfoDisplay heading="Hints" data="" />
+                    <SameLineInfoDisplay heading="Hints" data="No hints provided"/>
                 }
                 <SameLineInfoDisplay heading="Flag" data={data.challenge.flag} />
                 <SameLineInfoDisplay heading="Flag Case Sensitivity" data={data.challenge.is_flag_case_sensitive ? "Sensitive" : "Insensitive"} />
-                <NextLineInfoDisplay heading="Solution Explanation" data={data.challenge.solution_explanation ? data.challenge.solution_explanation : ''} />
-                <NextLineInfoDisplay heading="File" data="will be added as a feature soon" />
+                <NextLineInfoDisplay heading="Solution Explanation" data={data.challenge.solution_explanation ? data.challenge.solution_explanation : 'No solution provided'} />
+                <NextLineInfoDisplay heading="File">
+                  {
+                    data.challenge.challenge_file_attachment ? 
+                      <Link 
+                        className="mt-2" 
+                        color='teal.500' 
+                        href={data.challenge.challenge_file_attachment}
+                        target="_blank"
+                      >
+                        {data.challenge.challenge_file_attachment}
+                      </Link>
+                      :
+                      <Text>No file attached</Text>
+                  }
+                </NextLineInfoDisplay>
             </div>
         </Stack>
 

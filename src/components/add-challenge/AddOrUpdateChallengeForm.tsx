@@ -1,9 +1,9 @@
 "use client"
 
-import { useCreateChallenge, useGetChallengeDetails } from "@/hooks/challenges.hooks";
+import { useCreateChallenge, useGetChallengeDetails, useUpdateChallenge } from "@/hooks/challenges.hooks";
 import { CreateChallengeRequest } from "@/types/challenges.types";
 import { CreateChallengeFormData } from "@/types/forms.types";
-import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
+import { Input, Text, Box, Textarea, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberInput, NumberIncrementStepper, Select, Button, Alert, AlertIcon, AlertTitle, AlertDescription, useToast, Link, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types'
 
@@ -23,11 +23,13 @@ export default function AddOrUpdateChallengeForm(
         challenge_category: '',
         solution_explanation: '',
         hints: [],
-        // file_attachment: null
+        challenge_file_attachment: null
     };
 
     // hooks
     const [formData, setFormData] = useState<CreateChallengeFormData>(defaultFormValues);
+    const [isFileChanged, setIsFileChanged] = useState<boolean>(false);
+    const [isFileAttached, setIsFileAttached] = useState<boolean>(false);
 
     const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
 
@@ -48,19 +50,27 @@ export default function AddOrUpdateChallengeForm(
 
         if (data){
             const {challenge} = data;
-            setFormData({
-                challenge_name: challenge.challenge_name,
-                challenge_description: challenge.challenge_name,
-                flag: challenge.flag,
-                is_flag_case_sensitive: challenge.is_flag_case_sensitive,
-                division: JSON.stringify(challenge.division),
-                points: challenge.points,
-                challenge_category: challenge.category,
-                solution_explanation: challenge.solution_explanation ?? '',
-                hints: challenge.hints,
-            });
-        }
+            if (challenge){
+                setFormData({
+                    challenge_name: challenge.challenge_name,
+                    challenge_description: challenge.challenge_name,
+                    flag: challenge.flag,
+                    is_flag_case_sensitive: challenge.is_flag_case_sensitive,
+                    division: JSON.stringify(challenge.division),
+                    points: challenge.points,
+                    challenge_category: challenge.challenge_category,
+                    solution_explanation: challenge.solution_explanation ?? '',
+                    hints: challenge.hints ?? [],
+                    challenge_file_attachment: null
+                });
+                if (challenge.challenge_file_attachment){
+                    setIsFileAttached(true);
+                }
+            } else {
+                console.log(`challenge with id, ${challengeId}, does not exist`);
+            }
 
+        }
 
     }, [data]);
 
@@ -71,6 +81,21 @@ export default function AddOrUpdateChallengeForm(
             toast({
                 title: 'Challenge created.',
                 position: 'top',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            });
+        },
+        (error) => {
+            setErrorMessage(error.message);
+        }
+    );
+
+    const {mutate: updateChallenge, isPending: updateChallengeIsPending} = useUpdateChallenge(
+        (data) => {
+            setFormErrorAlert(null);
+            toast({
+                title: 'Challenge updated.',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
@@ -122,7 +147,13 @@ export default function AddOrUpdateChallengeForm(
         }
 
         if (isUpdateChallenge){
-
+            // possible error here with empty string challenge id. this would never happen
+            // in real life scenario but it theoretically could
+            updateChallenge({
+                challenge_id: challengeId ?? "",
+                request_body,
+                is_challenge_file_changed: isFileChanged
+            });
         } else {
             createChallenge(request_body);
         }
@@ -273,20 +304,37 @@ export default function AddOrUpdateChallengeForm(
 
             <Box className="mb-6 flex flex-col">
                 <Text className="mb-2" as="b">File Attachment</Text>
-                <input
-                    type="file"
-                    className="file:cursor-pointer w-max file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold"
-                    name="file_attachment"
-                    // onChange={(e) => {
-                    //     setFormData({...formData, file_attachment: e.target.files && e.target.files[0]})
-                    // }}
+                {isFileAttached && data?.challenge?.challenge_file_attachment ?
+                    <Flex>
+                        <Link className="mt-2" color='teal.500' href={data?.challenge?.challenge_file_attachment}>Challenge File</Link>
+                        <Button colorScheme="red" className="ml-2" rounded={"50px"} onClick={() => {
+                            setIsFileAttached(false);
+                            setIsFileChanged(true);
+                            setFormData({...formData, challenge_file_attachment: null});
+                        }}>Remove file</Button>
+                    </Flex>
+                    :
+                    <input
+                        type="file"
+                        className="file:cursor-pointer w-max file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold"
+                        name="challenge_file_attachment"
+                        onChange={(e) => {
+                            setIsFileAttached(true);
+                            setIsFileChanged(true);
+                            setFormData({...formData, challenge_file_attachment: e.target.files && e.target.files[0]})
+                        }}
 
-                />
+                    />
+                }
+
             </Box>
 
-            <Button type="submit" className="w-full" colorScheme="blue" isLoading={createChallengeIsPending}>Add Challenge</Button>
+            <Button type="submit" className="w-full" colorScheme="blue" isLoading={isUpdateChallenge ? updateChallengeIsPending : createChallengeIsPending}>
+                {isUpdateChallenge ? "Update challenge" : "Add Challenge"}
+            </Button>
+
         </form>
     );
 }

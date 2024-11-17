@@ -6,7 +6,7 @@ export type Hint = {
 export type Challenges = {
     challenge_id: string;
     challenge_name: string,
-    category: string,
+    challenge_category: string,
     challenge_description: string,
     flag: string,
     is_flag_case_sensitive: boolean,
@@ -14,7 +14,7 @@ export type Challenges = {
     division: number[],
     hints: Hint[],
     solution_explanation: string | null,
-    file_attachment: File | null,
+    challenge_file_attachment: string | null
 }
 
 export type CreateChallengeRequest = {
@@ -29,17 +29,19 @@ export type CreateChallengeRequest = {
     verified: boolean;
     solution_explanation: string | null;
     hints: Hint[];
-    // file_attachment: File | null;
+    challenge_file_attachment: File | null;
 };
 
-export type UpdateChallengeRequest = CreateChallengeRequest & {
+export type UpdateChallengeRequest = {
     challenge_id: string;
+    request_body: CreateChallengeRequest;
+    is_challenge_file_changed: boolean;
 };
 
 export type ListChallenges = {
     challenge_id: string;
     challenge_name: string,
-    category: string,
+    challenge_category: string,
     challenge_description: string,
     points: number,
     division: number[],
