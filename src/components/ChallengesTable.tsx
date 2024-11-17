@@ -78,7 +78,7 @@ export default function App({
           challenge.challenge_name
             ?.toLowerCase()
             .includes(filterValue.toLowerCase()) ||
-          challenge.category
+          challenge.challenge_category
             ?.toLowerCase()
             .includes(filterValue.toLowerCase()) ||
           challenge.challenge_description
@@ -131,7 +131,7 @@ export default function App({
         case 'name':
           return <div>{challengesData.challenge_name}</div>;
         case 'category':
-          return <div>{challengesData.category}</div>;
+          return <div>{challengesData.challenge_category}</div>;
         case 'description':
           return (
             <div className="truncate max-w-xs md:max-w-md lg:max-w-xl">

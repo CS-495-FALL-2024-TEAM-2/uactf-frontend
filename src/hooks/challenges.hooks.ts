@@ -13,14 +13,18 @@ export const useCreateChallenge = (
     isPending: boolean;
 } => {
     const createChallenge = async (request_body: CreateChallengeRequest) => {
+        const formData = new FormData();
+        if (request_body.challenge_file_attachment){
+            formData.append("challenge_file_attachment", request_body.challenge_file_attachment);
+        }
+
+        formData.append("challenge", JSON.stringify(request_body));
+
         const response = await fetch(
             `${BASE_API_URI}/challenges/create`, 
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request_body),
+                body: formData,
                 credentials: 'include',
             }
         );
@@ -135,15 +139,20 @@ export const useUpdateChallenge = (
     mutate: UseMutateFunction<any, Error, UpdateChallengeRequest, unknown>,
     isPending: boolean;
 } => {
-    const updateChallenge = async (request_body: UpdateChallengeRequest) => {
+    const updateChallenge = async ({challenge_id, request_body, is_challenge_file_changed}: UpdateChallengeRequest) => {
+        const formData = new FormData();
+        formData.append("delete_old_challenge_file", is_challenge_file_changed ? "true" : "false");
+        if (request_body.challenge_file_attachment){
+            formData.append("challenge_file_attachment", request_body.challenge_file_attachment);
+        }
+
+        formData.append("challenge", JSON.stringify(request_body));
+            
         const response = await fetch(
-            `${BASE_API_URI}/challenges/${request_body.challenge_id}`, 
+            `${BASE_API_URI}/challenges/${challenge_id}`, 
             {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request_body),
+                body: formData,
                 credentials: 'include',
             }
         );

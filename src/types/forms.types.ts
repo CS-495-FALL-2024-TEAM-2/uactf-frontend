@@ -10,7 +10,7 @@ export type CreateChallengeFormData = {
     challenge_category: string;
     solution_explanation: string;
     hints: Hint[];
-    // file_attachment: File | null;
+    challenge_file_attachment: File | null;
 };
 
 export type TeacherRegisterFormData = {
