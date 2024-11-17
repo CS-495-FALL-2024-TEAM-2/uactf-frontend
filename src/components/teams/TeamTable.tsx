@@ -59,6 +59,7 @@ export default function TeamTable({
       refetchTeams();
       toast({
         title: 'Team deleted',
+        position: 'top',
         description: 'Team has been deleted successfully',
         status: 'success',
         duration: 3000,

@@ -96,6 +96,7 @@ export default function AddOrUpdateChallengeForm(
             setFormErrorAlert(null);
             toast({
                 title: 'Challenge updated.',
+                position: 'top',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
