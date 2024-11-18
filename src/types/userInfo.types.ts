@@ -1,10 +1,3 @@
-// Student type definitions
-export type LiabilityForm = {
-  s3_key: string;
-  filename: string;
-  upload_date: Date;
-};
-
 // Main student type
 export type StudentInfo = {
   id: string;
@@ -15,7 +8,7 @@ export type StudentInfo = {
   created_at: Date;
   shirt_size: string;
   email?: string;
-  liability_form: LiabilityForm;
+  signed_liability_release_form: string;
   is_verified: boolean;
 };
 

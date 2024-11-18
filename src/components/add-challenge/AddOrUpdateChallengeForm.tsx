@@ -326,10 +326,8 @@ export default function AddOrUpdateChallengeForm(
                             setIsFileChanged(true);
                             setFormData({...formData, challenge_file_attachment: e.target.files && e.target.files[0]})
                         }}
-
                     />
                 }
-
             </Box>
 
             <Button type="submit" className="w-full" colorScheme="blue" isLoading={isUpdateChallenge ? updateChallengeIsPending : createChallengeIsPending}>
