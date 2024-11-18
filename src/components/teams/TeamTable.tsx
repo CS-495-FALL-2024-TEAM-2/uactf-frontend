@@ -140,7 +140,7 @@ export default function TeamTable({
             </div>
           );
         default:
-          return cellValue.toString();
+          return cellValue ? cellValue.toString() : '';
       }
     },
     []

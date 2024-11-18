@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children }: {
 
   useEffect(() => {
     let result = false;
-    if (currentUser !== null){
+    if (currentUser !== null && currentUser.userRole !== undefined){
         if (pathname.startsWith("/competitions")){
             if (currentUser?.userRole === "admin"){
                 result = true;
