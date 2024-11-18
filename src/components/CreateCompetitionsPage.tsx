@@ -22,6 +22,7 @@ export default function CreateCompetitionsPage(){
             setFormData(defaultFormValues);
             toast({
                 title: 'Competition created.',
+                position: 'top',
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
@@ -49,7 +50,7 @@ export default function CreateCompetitionsPage(){
             form.reportValidity();
             return;
         }
-        
+
 
         //TODO: probably add validation to check for when registration deadline has passed and we're setting is_active to true
         createCompetition(formData);
@@ -59,7 +60,7 @@ export default function CreateCompetitionsPage(){
         <Stack className="p-4 mt-4" align={"center"}>
             <Heading className="mb-8">Create Competition</Heading>
             <form className="w-full max-w-96" onSubmit={createCompetitionEventHandler} noValidate>
-                {formErrorAlert && 
+                {formErrorAlert &&
                     <Alert status='error' className="mb-6">
                         <AlertIcon />
                         <AlertTitle>An error occurred!</AlertTitle>
@@ -68,22 +69,22 @@ export default function CreateCompetitionsPage(){
                 }
                 <FormControl className="mb-6">
                     <FormLabel className="mb-2" as="b">Name of Competition</FormLabel>
-                    <Input 
-                        placeholder="Capture the Flag 2024" 
-                        name="competition_name" 
-                        value={formData.competition_name} 
+                    <Input
+                        placeholder="Capture the Flag 2024"
+                        name="competition_name"
+                        value={formData.competition_name}
                         onChange={handleInputChange}
                         required
                     />
                 </FormControl>
-                
+
                 <FormControl className="mb-6">
                     <FormLabel className="mb-2" as="b">Registration Deadline</FormLabel>
-                    <Input 
-                        type="date" 
-                        placeholder="Registration Deadline" 
-                        name="registration_deadline" 
-                        value={formData.registration_deadline} 
+                    <Input
+                        type="date"
+                        placeholder="Registration Deadline"
+                        name="registration_deadline"
+                        value={formData.registration_deadline}
                         onChange={handleInputChange}
                         required
                     />
@@ -92,22 +93,22 @@ export default function CreateCompetitionsPage(){
                 <FormControl className="mb-6">
                     <Flex>
                         <FormLabel>Mark competition as ongoing?</FormLabel>
-                        <Switch 
-                            name='is_active' 
+                        <Switch
+                            name='is_active'
                             isChecked={formData.is_active}
                             onChange={(e) => {
                                 setFormData({...formData, is_active: e.currentTarget.checked});
                             }}
                         />
                     </Flex>
-                    
+
                     <FormHelperText>Teachers will be able to register for this competition if the toggle is switched on</FormHelperText>
-                    
+
                 </FormControl>
-                
-                <Button 
-                    type="submit" 
-                    className="w-full" 
+
+                <Button
+                    type="submit"
+                    className="w-full"
                     colorScheme="blue"
                     isLoading={createCompetitionIsPending}
                 >

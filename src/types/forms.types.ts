@@ -14,10 +14,12 @@ export type CreateChallengeFormData = {
 };
 
 export type TeacherRegisterFormData = {
-  school_name: string;
   first_name: string;
   last_name: string;
   email: string;
+  school_name: string;
+  school_address: string;
+  school_website: string;
   contact_number: string;
   shirt_size: string;
 }

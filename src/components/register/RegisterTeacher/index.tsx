@@ -6,9 +6,10 @@ import {
   TeacherRegisterFormData,
 } from '@/types/forms.types';
 import RegisterTeacherForm from './RegisterTeacherForm';
-import AddTeamForm from '../../AddTeamForm';
 import { Box, Spinner, Stack, Text } from '@chakra-ui/react';
 import { useCreateTeacher } from '@/hooks/accounts.hooks';
+import { useCreateTeam } from '@/hooks/teams.hooks';
+import AddTeamForm from '@/components/teams/AddTeamForm';
 
 export default function RegisterTeacher() {
   const [
@@ -23,11 +24,24 @@ export default function RegisterTeacher() {
     'pending' | 'success' | 'error'
   >('pending');
 
+  const { mutate: createTeam } = useCreateTeam(
+    (data) => {
+      setTeamInfo(null);
+      setStatus('success');
+    },
+    (error) => {
+      setStatus('error');
+    }
+  )
+
   const { mutate: createTeacher } = useCreateTeacher(
     (data) => {
-      // TODO: Add team members if there are any
-      setTeacherRegisterFormInput(null);
-      setStatus('success');
+      if (teamInfo) {
+        createTeam(teamInfo);
+      } else {
+        setTeacherRegisterFormInput(null);
+        setStatus('success');
+      }
     },
     (error) => {
       setStatus('error');
@@ -42,6 +56,8 @@ export default function RegisterTeacher() {
         last_name: teacherRegisterFormInput.last_name,
         email: teacherRegisterFormInput.email,
         school_name: teacherRegisterFormInput.school_name,
+        school_address: teacherRegisterFormInput.school_address,
+        school_website: teacherRegisterFormInput.school_website,
         contact_number: teacherRegisterFormInput.contact_number,
         shirt_size: teacherRegisterFormInput.shirt_size,
       });

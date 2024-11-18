@@ -1,7 +1,19 @@
 import { TeamData, TeamWithStudents } from '@/types/teams.types';
 import { StudentInfo } from '@/types/userInfo.types';
 import useScreenSize from '@/utils/getScreenSize';
-import { Button, Input, Tag, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import {
   SortDescriptor,
   Table,
@@ -13,6 +25,8 @@ import {
 } from '@nextui-org/table';
 import Link from 'next/link';
 import React from 'react';
+import { useToast } from '@chakra-ui/react';
+import { useDeleteTeam } from '@/hooks/teams.hooks';
 
 const columns = [
   { name: 'FIRST NAME', uid: 'first_name', sortable: true },
@@ -23,9 +37,12 @@ const columns = [
 
 export default function TeamTable({
   teamData,
+  refetchTeams,
 }: {
   teamData: TeamWithStudents;
+  refetchTeams: () => void;
 }) {
+  const toast = useToast();
   const membersData = teamData.students;
 
   const [filterValue, setFilterValue] = React.useState('');
@@ -35,6 +52,30 @@ export default function TeamTable({
     column: 'name',
     direction: 'ascending',
   });
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const { mutate: deleteTeam } = useDeleteTeam(
+    (data) => {
+      refetchTeams();
+      toast({
+        title: 'Team deleted',
+        position: 'top',
+        description: 'Team has been deleted successfully',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+    (error) => {
+      toast({
+        title: 'Error deleting team',
+        description: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  );
 
   const screenSize = useScreenSize();
 
@@ -121,18 +162,66 @@ export default function TeamTable({
           placeholder="Search by name..."
           onChange={onSearchChange}
         />
-        <Link href={`/teams/edit/${teamData.id}`}>
+        <Link href={`/teams/update/${teamData.id}`}>
           <Button>Edit Team</Button>
         </Link>
+        <Button colorScheme="red" onClick={() => setIsOpen(true)}>
+          Delete Team
+        </Button>
       </div>
     );
   }, [onSearchChange]);
 
+  const deleteModal = React.useMemo(() => {
+    return (
+      <div>
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Delete Team</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Are you sure you want to delete this team?</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <div className="flex flex-row gap-2">
+                <Button
+                  colorScheme="red"
+                  onClick={() => {
+                    deleteTeam(teamData.id);
+                    setIsOpen(false);
+                  }}
+                >
+                  Delete
+                </Button>
+                <Button
+                  colorScheme="gray"
+                  mr={3}
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
+    );
+  }, [isOpen]);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row items-center gap-2">
-        <Text fontSize="2xl" as="b">{teamData.name}</Text>
-        <Tag>{`${teamData.is_virtual ? "Virtual" : "In Person"}`}</Tag>
+        <Text fontSize="2xl" as="b">
+          {teamData.name}
+        </Text>
+        <Tag>{`${
+          teamData.is_virtual ? 'Virtual' : 'In Person'
+        }`}</Tag>
+        {teamData.division.map((div, index) => (
+          <Tag key={index}>Division {div}</Tag>
+        ))}
       </div>
       <Table
         aria-label="Table listing team members info"
@@ -167,6 +256,7 @@ export default function TeamTable({
           )}
         </TableBody>
       </Table>
+      {deleteModal}
     </div>
   );
 }

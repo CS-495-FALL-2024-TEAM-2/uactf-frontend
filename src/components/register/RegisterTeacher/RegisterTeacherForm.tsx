@@ -31,10 +31,12 @@ export default function RegisterTeacherForm({
   const [formData, setFormData] = React.useState<
     TeacherRegisterFormData
   >({
-    school_name: '',
     first_name: '',
     last_name: '',
     email: '',
+    school_name: '',
+    school_address: '',
+    school_website: '',
     contact_number: '',
     shirt_size: '',
   });
@@ -127,6 +129,27 @@ export default function RegisterTeacherForm({
             />
           </FormControl>
 
+          <FormControl isRequired>
+            <FormLabel htmlFor="school_address">School Address</FormLabel>
+            <Input
+              type="text"
+              name="school_address"
+              id="school_address"
+              maxWidth="1264px"
+              onChange={handleInputChange}
+            />
+          </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel htmlFor="school_website">School Website</FormLabel>
+            <Input
+              type="text"
+              name="school_website"
+              id="school_website"
+              maxWidth="1264px"
+              onChange={handleInputChange}
+            />
+          </FormControl>
           <hr />
 
           <FormLabel>

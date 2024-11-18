@@ -36,11 +36,12 @@ export default function AddOrUpdateChallengeForm(
     const toast = useToast();
 
     const {error, data} = useGetChallengeDetails(challengeId ?? "", challengeId !== undefined);
-        
+
     useEffect(() => {
         if (error){
             toast({
                 title: 'Error fetching challenge details',
+                position: 'top',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -68,9 +69,9 @@ export default function AddOrUpdateChallengeForm(
             } else {
                 console.log(`challenge with id, ${challengeId}, does not exist`);
             }
-            
+
         }
-        
+
     }, [data]);
 
     const {mutate: createChallenge, isPending: createChallengeIsPending} = useCreateChallenge(
@@ -79,6 +80,7 @@ export default function AddOrUpdateChallengeForm(
             setFormData(defaultFormValues);
             toast({
                 title: 'Challenge created.',
+                position: 'top',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
@@ -94,6 +96,7 @@ export default function AddOrUpdateChallengeForm(
             setFormErrorAlert(null);
             toast({
                 title: 'Challenge updated.',
+                position: 'top',
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
@@ -145,7 +148,7 @@ export default function AddOrUpdateChallengeForm(
         }
 
         if (isUpdateChallenge){
-            // possible error here with empty string challenge id. this would never happen 
+            // possible error here with empty string challenge id. this would never happen
             // in real life scenario but it theoretically could
             updateChallenge({
                 challenge_id: challengeId ?? "",
@@ -160,7 +163,7 @@ export default function AddOrUpdateChallengeForm(
 
     return (
         <form className="w-full max-w-96" onSubmit={addChallengeEventHandler} noValidate>
-            {formErrorAlert && 
+            {formErrorAlert &&
                 <Alert status='error' className="mb-6">
                     <AlertIcon />
                     <AlertTitle>An error occurred!</AlertTitle>
@@ -172,7 +175,7 @@ export default function AddOrUpdateChallengeForm(
                 <Text className="mb-2" as="b">Name</Text>
                 <Input placeholder="Name of challenge" name="challenge_name" value={formData.challenge_name} onChange={handleInputChange} required/>
             </Box>
-            
+
             <Box className="mb-6">
                 <Text className="mb-2" as="b">Description</Text>
                 <Textarea placeholder="Description of challenge" name="challenge_description" value={formData.challenge_description} onChange={handleInputChange} required/>
@@ -237,7 +240,7 @@ export default function AddOrUpdateChallengeForm(
             </Box>
 
             <Box className="mb-12">
-                <Text className="mb-2" as="b">Hint (optional)</Text>                
+                <Text className="mb-2" as="b">Hint (optional)</Text>
                 {
                     formData.hints.map(
                         (hint, map_index) => (
@@ -286,7 +289,7 @@ export default function AddOrUpdateChallengeForm(
                         )
                     )
                 }
-                
+
                 {
                     (formData.hints.length < 2) && (
                         <Button className="float-end" onClick={() => {
@@ -312,11 +315,11 @@ export default function AddOrUpdateChallengeForm(
                         }}>Remove file</Button>
                     </Flex>
                     :
-                    <input 
-                        type="file" 
+                    <input
+                        type="file"
                         className="file:cursor-pointer w-max file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
-                        file:text-sm file:font-semibold" 
+                        file:text-sm file:font-semibold"
                         name="challenge_file_attachment"
                         onChange={(e) => {
                             setIsFileAttached(true);
@@ -326,7 +329,7 @@ export default function AddOrUpdateChallengeForm(
 
                     />
                 }
-            
+
             </Box>
 
             <Button type="submit" className="w-full" colorScheme="blue" isLoading={isUpdateChallenge ? updateChallengeIsPending : createChallengeIsPending}>

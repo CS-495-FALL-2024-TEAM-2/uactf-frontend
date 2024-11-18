@@ -14,6 +14,7 @@ export type StudentInfo = {
   last_name: string;
   created_at: Date;
   shirt_size: string;
+  email?: string;
   liability_form: LiabilityForm;
   is_verified: boolean;
 };
