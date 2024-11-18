@@ -229,10 +229,10 @@ export default function RegisterTeacherForm({
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
-                  <option value="large">Large</option>
-                  <option value="extra large">Extra Large</option>
+                  <option value="Small">Small</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Large">Large</option>
+                  <option value="Extra large">Extra Large</option>
                 </Select>
               </GridItem>
             </Grid>
