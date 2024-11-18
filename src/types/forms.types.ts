@@ -41,3 +41,10 @@ export type AddTeamFormData = {
 export type CDMemberRegisterFormData = {
   email: string;
 }
+
+export type CreateCompetitionFormData = {
+  competition_name: string;
+  registration_deadline: string;
+  is_active: boolean;
+  liability_release_form_file: File | null;
+};

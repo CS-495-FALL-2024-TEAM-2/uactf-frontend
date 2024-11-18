@@ -2,19 +2,21 @@
 
 import { useCreateCompetition } from "@/hooks/competitions.hooks";
 import { CreateCompetitionRequest } from "@/types/competitions.types";
-import { Heading, Input, Button, Stack, FormControl, FormLabel, FormHelperText, Switch, Flex, Alert, AlertTitle, AlertIcon, AlertDescription, useToast } from "@chakra-ui/react";
+import { CreateCompetitionFormData } from "@/types/forms.types";
+import { Heading, Input, Button, Stack, FormControl, FormLabel, FormHelperText, Switch, Flex, Alert, AlertTitle, AlertIcon, AlertDescription, useToast, Text, Link } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function CreateCompetitionsPage(){
-    const defaultFormValues: CreateCompetitionRequest = {
+    const defaultFormValues: CreateCompetitionFormData = {
         competition_name: '',
         registration_deadline: '',
-        is_active: false
+        is_active: false,
+        liability_release_form_file: null
     };
 
     // hooks
     const toast = useToast();
-    const [formData, setFormData] = useState<CreateCompetitionRequest>(defaultFormValues);
+    const [formData, setFormData] = useState<CreateCompetitionFormData>(defaultFormValues);
     const [formErrorAlert, setFormErrorAlert] = useState<string | null>(null);
     const {mutate: createCompetition, isPending: createCompetitionIsPending} = useCreateCompetition(
         (data) => {
@@ -104,6 +106,28 @@ export default function CreateCompetitionsPage(){
 
                     <FormHelperText>Teachers will be able to register for this competition if the toggle is switched on</FormHelperText>
 
+                    {formData.is_active && <Alert status='warning' className="mt-4">
+                        <AlertIcon />
+                        <AlertTitle>Warning</AlertTitle>
+                        <AlertDescription>Setting this competition to "active" will deactivate other competitions</AlertDescription>
+                    </Alert>}
+                    
+                </FormControl>
+
+                <FormControl className="mb-6">
+                    <FormLabel className="mb-2">File Attachment</FormLabel>
+                    <input 
+                        type="file" 
+                        className="file:cursor-pointer w-max file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold" 
+                        name="challenge_file_attachment"
+                        onChange={(e) => {
+                            setFormData({...formData, liability_release_form_file: e.target.files && e.target.files[0]})
+                        }}
+
+                    />
+            
                 </FormControl>
 
                 <Button
