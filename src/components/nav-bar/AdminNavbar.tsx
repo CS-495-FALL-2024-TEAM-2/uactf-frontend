@@ -60,11 +60,6 @@ export default function AdminNavbar() {
                 <MenuItem>
                   <LogoutMenuItem />
                 </MenuItem>
-                <MenuItem>
-                  <Link href="/approve-liability-release-form">
-                    Approve forms
-                  </Link>
-                </MenuItem>
               </MenuList>
             </Menu>
           </Box>
