@@ -135,7 +135,7 @@ export default function TeamTable({
       );
     }
     return filteredMembers;
-  }, [filterValue]);
+  }, [filterValue, membersData]);
 
   const sortedItems = React.useMemo(() => {
     return [...filteredItems].sort(
