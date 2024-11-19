@@ -9,48 +9,18 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useColorModeValue,
   Stack,
-  Center,
   IconButton,
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 import NavbarLogo from './NavbarLogo'
 import NavbarThemeMenuItem from './NavbarThemeMenuItem'
+import LogoutButton from './LogoutButton'
+import LogoutMenuItem from './LogoutMenuItem'
 
 export default function CrimsonDefenseNavbar() {
-  const profileMenu = <Menu>
-  <MenuButton
-    as={Button}
-    rounded={'full'}
-    cursor={'pointer'}
-    minW={0}
-    size={'sm'}>
-    {/* TODO: Log In/Register when we have auth setup */}
-    My Profile
-  </MenuButton>
-  <MenuList alignItems={'center'}>
-    <br />
-    <Center>
-      <Avatar
-        size={'2xl'}
-        src={'https://avatars.dicebear.com/api/male/username.svg'}
-      />
-    </Center>
-    <br />
-    <Center>
-      <p>Username</p>
-    </Center>
-    <br />
-    <MenuDivider />
-    <MenuItem>Your Servers</MenuItem>
-    <MenuItem>Account Settings</MenuItem>
-    <MenuItem>Logout</MenuItem>
-  </MenuList>
-</Menu>;
-
 
   return (
     <>
@@ -60,9 +30,6 @@ export default function CrimsonDefenseNavbar() {
           <NavbarLogo />
 
           <Box className='md:hidden'>
-            <div className='inline mr-4'>
-              {profileMenu}
-            </div>
             <div className='inline mr-4'>
                 <NavbarThemeMenuItem />
             </div>
@@ -79,6 +46,9 @@ export default function CrimsonDefenseNavbar() {
                     Challenges
                   </Link>
                 </MenuItem>
+                <MenuItem>
+                  <LogoutMenuItem />
+                </MenuItem>
               </MenuList>
             </Menu>
           </Box>
@@ -92,9 +62,8 @@ export default function CrimsonDefenseNavbar() {
                     Challenges
                   </Button>
                 </Link>
+                <LogoutButton />
                 <NavbarThemeMenuItem />
-
-                {profileMenu}
               </Stack>
             </Flex>
           </Box>

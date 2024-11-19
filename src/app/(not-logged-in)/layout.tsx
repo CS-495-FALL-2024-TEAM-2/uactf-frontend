@@ -1,6 +1,6 @@
 import React from 'react';
 import '../globals.css';
-import PublicNavbar from '@/components/PublicNavbar';
+import PublicNavbar from '@/components/nav-bar/PublicNavbar';
 
 export default function RootLayout({
   children,
