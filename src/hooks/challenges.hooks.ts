@@ -131,7 +131,6 @@ export const useDeleteChallenge = (
     return {mutate: deleteChallengeMutation.mutate, isPending: deleteChallengeMutation.isPending};
 }
 
-// TODO: update api endpoint
 export const useUpdateChallenge = (
     onSuccessFn?: ((data: any, variables: UpdateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined,
     onErrorFn?: ((error: Error, variables: UpdateChallengeRequest, context: unknown) => Promise<unknown> | unknown) | undefined

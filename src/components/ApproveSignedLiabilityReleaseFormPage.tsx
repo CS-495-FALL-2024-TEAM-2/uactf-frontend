@@ -1,15 +1,12 @@
 'use client';
 
-import { useGetChallenges } from '@/hooks/challenges.hooks';
-import ChallengesTable from './ChallengesTable';
-import { useGetStudentsToBeVerified } from '@/hooks/admin.hooks';
+import { useGetStudentsToBeVerified, useVerifyStudent } from '@/hooks/admin.hooks';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, SortDescriptor } from '@nextui-org/table';
-import { useToast } from '@chakra-ui/react';
+import { Text, Button, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import useScreenSize from '@/utils/getScreenSize';
 import React from 'react';
 import { StudentInfo } from '@/types/userInfo.types';
-import { membersData } from '@/utils/mockData/teamsData';
 
 const columns = [
     { name: 'FIRST NAME', uid: 'first_name', sortable: true },
@@ -17,28 +14,53 @@ const columns = [
     { name: 'SHIRT SIZE', uid: 'shirt_size', sortable: true },
     { name: 'VERIFIED', uid: 'is_verified' },
     { name: 'SIGNED FORM', uid: 'signed_liability_release_form' },
-    { name: '', uid: 'approve_form' },
+    { name: 'APPROVE FORM', uid: 'approve_form' },
   ];
 
 export default function ApproveSignedLiabilityReleaseFormPage() {
-  const { isPending, error, data } = useGetStudentsToBeVerified();
+  const { isPending, error, data, refetchStudentsToBeVerified } = useGetStudentsToBeVerified();
 
   const toast = useToast();
   const [filterValue, setFilterValue] = useState('');
+  const [isConfirmApprovalModalOpen, setIsConfirmApprovalModalOpen] = React.useState(false);
+  const [studentToVerify, setStudentToVerify] = React.useState<StudentInfo | null>(null);
   const [sortDescriptor, setSortDescriptor] = React.useState<
     SortDescriptor
   >({
     column: 'name',
     direction: 'ascending',
   });
-  const [isOpen, setIsOpen] = React.useState(false);
+
+  const { mutate: verifyStudent, isPending: verifyStudentIsPending } = useVerifyStudent(
+    (data) => {
+        setIsConfirmApprovalModalOpen(false);
+        refetchStudentsToBeVerified();
+        toast({
+            title: 'Approval successful',
+            position: 'top',
+            description: 'Form has been approved successfully!',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
+    },
+    (error) => {
+      toast({
+        title: 'Error approving form',
+        description: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  ); 
 
   const screenSize = useScreenSize();
 
   const visibleColumns =
     screenSize.width < 620
-      ? ['first_name', 'last_name', 'is_verified']
-      : ['first_name', 'last_name', 'shirt_size', 'is_verified'];
+      ? ['first_name', 'last_name', 'signed_liability_release_form', 'approve_form']
+      : ['first_name', 'last_name', 'signed_liability_release_form', 'approve_form'];
 
   const headerColumns = React.useMemo(() => {
     return columns.filter((column) =>
@@ -47,21 +69,25 @@ export default function ApproveSignedLiabilityReleaseFormPage() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredMembers = [...membersData];
+    let filteredMembers: StudentInfo[] = [];
+    if (data){
+        filteredMembers = [...data.students];
 
-    if (filterValue) {
-      filteredMembers = filteredMembers.filter(
-        (member) =>
-          member.first_name
-            .toLowerCase()
-            .includes(filterValue.toLowerCase()) ||
-          member.last_name
-            .toLowerCase()
-            .includes(filterValue.toLowerCase())
-      );
+        if (filterValue) {
+        filteredMembers = filteredMembers.filter(
+            (member) =>
+            member.first_name
+                .toLowerCase()
+                .includes(filterValue.toLowerCase()) ||
+            member.last_name
+                .toLowerCase()
+                .includes(filterValue.toLowerCase())
+        );
+        }
     }
+    
     return filteredMembers;
-  }, [filterValue]);
+  }, [filterValue, data]);
 
   const sortedItems = React.useMemo(() => {
     return [...filteredItems].sort(
@@ -95,8 +121,30 @@ export default function ApproveSignedLiabilityReleaseFormPage() {
               {membersData.is_verified ? 'Verified' : 'Not Verified'}
             </div>
           );
+        case 'signed_liability_release_form':
+            return (
+                <Link 
+                    href={membersData.signed_liability_release_form}
+                    color="teal.500"
+                    target="_blank"
+                >
+                    Open signed form
+                </Link>
+            )
+        case 'approve_form':
+            return (
+                <Button 
+                    colorScheme="blue"
+                    onClick={() => {
+                        setStudentToVerify(membersData);
+                        setIsConfirmApprovalModalOpen(true);
+                    }}
+                >
+                    Approve liability form
+                </Button>
+            )
         default:
-          return cellValue.toString();
+          return cellValue ? cellValue.toString() : '';
       }
     },
     []
@@ -111,6 +159,49 @@ export default function ApproveSignedLiabilityReleaseFormPage() {
     }
   };
 
+  const confirmFormApprovalModal = React.useMemo(() => {
+    return (
+        <div>
+            <Modal isOpen={isConfirmApprovalModalOpen} onClose={() => setIsConfirmApprovalModalOpen(false)}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Approve Signed Liability Release Form</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                <Text>Are you sure you want to approve this signed liability release form for this student?</Text>
+                </ModalBody>
+
+                <ModalFooter>
+                <div className="flex flex-row gap-2">
+                    <Button
+                        colorScheme="blue"
+                        isLoading={verifyStudentIsPending}
+                        onClick={() => {
+                            if (studentToVerify){
+                                verifyStudent(studentToVerify.id);
+                            }
+                        }}
+                    >
+                        Approve
+                    </Button>
+                    <Button
+                        colorScheme="gray"
+                        mr={3}
+                        onClick={() => {
+                            setStudentToVerify(null);
+                            setIsConfirmApprovalModalOpen(false);
+                        }}
+                    >
+                    Cancel
+                    </Button>
+                </div>
+                </ModalFooter>
+            </ModalContent>
+            </Modal>
+        </div>
+    );
+    }, [isConfirmApprovalModalOpen, verifyStudentIsPending]);
+
   if (isPending)
     return (
       <div className="flex justify-center items-center h-100 text-bold">
@@ -124,13 +215,14 @@ export default function ApproveSignedLiabilityReleaseFormPage() {
       </div>
     );
 
+    
+
   return (
     <div>
         <Table
             aria-label="Table listing students waiting to be verified"
             isHeaderSticky
             sortDescriptor={sortDescriptor}
-            topContent={topContent}
             topContentPlacement="outside"
             onSortChange={setSortDescriptor}
             selectionMode="single"
@@ -159,6 +251,7 @@ export default function ApproveSignedLiabilityReleaseFormPage() {
             )}
             </TableBody>
         </Table>
+        {confirmFormApprovalModal}
     </div>
     
   );

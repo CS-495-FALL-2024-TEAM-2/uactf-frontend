@@ -91,6 +91,11 @@ export default function AdminNavbar() {
                     Teachers
                   </Link>
                 </MenuItem>
+                <MenuItem>
+                  <Link href="/approve-liability-release-form">
+                    Approve forms
+                  </Link>
+                </MenuItem>
               </MenuList>
             </Menu>
           </Box>
@@ -112,6 +117,11 @@ export default function AdminNavbar() {
                 <Link href="/teachers">
                   <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
                     Teachers
+                  </Button>
+                </Link>
+                <Link href="/approve-liability-release-form">
+                  <Button size='sm' bg={useColorModeValue('bama_gray', 'black')}>
+                    Approve forms
                   </Button>
                 </Link>
                 <NavbarThemeMenuItem />

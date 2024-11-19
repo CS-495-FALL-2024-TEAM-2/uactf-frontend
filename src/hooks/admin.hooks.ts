@@ -8,11 +8,12 @@ export const useGetStudentsToBeVerified = () : {
     data: {
         students: StudentInfo[]
     }
+    refetchStudentsToBeVerified: () => void
 } => {
     const endpoint = `${BASE_API_URI}/admin/get-students-to-be-verified`;
 
     // query
-    const { isPending, error, data} = useQuery({
+    const { isPending, error, data, refetch} = useQuery({
         queryKey: ['get-students-to-be-verified'],
         queryFn: async () => {
             const response = await fetch(endpoint, {credentials: 'include',});
@@ -23,7 +24,7 @@ export const useGetStudentsToBeVerified = () : {
         }
     });
 
-    return {isPending, error, data};
+    return {isPending, error, data, refetchStudentsToBeVerified: refetch};
 }
 
 export const useVerifyStudent = (

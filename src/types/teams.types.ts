@@ -30,3 +30,8 @@ export type UpdateTeamRequest = {
     shirt_size: string;
   } [];
 }
+
+export type UploadSignedLiabilityReleaseFormRequest = {
+  student_id: string;
+  signed_liability_release_form: File;
+};
