@@ -11,7 +11,7 @@ export default function TeacherViewTeams({
 }: {
   teacherId?: string;
 }) {
-  const { data, isPending, refetch } = useGetTeams(teacherId || '');
+  const { data, isPending, refetch } = useGetTeams();
   const teams = data?.teams || [];
 
   if (isPending) {

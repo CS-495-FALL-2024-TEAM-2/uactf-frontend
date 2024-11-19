@@ -3,7 +3,7 @@ import { TeamWithStudents, UpdateTeamRequest } from "@/types/teams.types"
 import { BASE_API_URI } from "@/utils/constants";
 import { UseMutateFunction, useMutation, useQuery } from "@tanstack/react-query";
 
-export const useGetTeams = (teacher_id?: string) : {
+export const useGetTeams = () : {
   isPending: boolean,
   error: Error | null,
   data: {
@@ -11,11 +11,11 @@ export const useGetTeams = (teacher_id?: string) : {
   },
   refetch: () => void
 } => {
-  const endpoint = `${BASE_API_URI}/teams/get?teacher_id=${teacher_id || ''}`;
+  const endpoint = `${BASE_API_URI}/teams/get`;
 
   // query
   const { isPending, error, data, refetch} = useQuery({
-    queryKey: ['teams', 'teacher', teacher_id],
+    queryKey: ['teams', 'teacher'],
     queryFn: async () => {
       const response = await fetch(endpoint, {credentials: 'include',});
       if (!response.ok) {

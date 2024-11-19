@@ -38,6 +38,10 @@ export default function ProtectedRoute({ children }: {
             if (currentUser?.userRole === "teacher"){
                 result = true;
             }
+        } else if (pathname.startsWith("/approve-liability-release-form")){
+          if (currentUser?.userRole === "admin"){
+            result = true;
+          }
         }
 
         if (result === false){

@@ -1,79 +1,38 @@
 "use client"
 
-import Link from "next/link";
+import NextLink from "next/link"; 
 import { useGetCompetitions } from "@/hooks/competitions.hooks";
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Link, SimpleGrid, Text } from "@chakra-ui/react";
 
 export default function CompetitionsPage(){
     const {isPending, error, data} = useGetCompetitions();
-    // const stuff = useGetCompetitions();
-    // const error = null;
-    // const isPending = false;
-    // const data = {
-    //     competitions: [
-    //         {
-    //             competition_id: 1,
-    //             competition_name: "Capture the Flag 2024",
-    //             is_active: true,
-    //             registration_deadline: "November 29th, 2024"
-    //         },
-    //         {
-    //             competition_id: 2,
-    //             competition_name: "Capture the Flag 2023",
-    //             is_active: false,
-    //             registration_deadline: "November 29th, 2023"
-    //         },
-    //         {
-    //             competition_id: 3,
-    //             competition_name: "Capture the Flag 2022",
-    //             is_active: false,
-    //             registration_deadline: "November 29th, 2022"
-    //         },
-    //         {
-    //             competition_id: 4,
-    //             competition_name: "Capture the Flag 2021",
-    //             is_active: false,
-    //             registration_deadline: "November 29th, 2021"
-    //         },
-    //         {
-    //             competition_id: 5,
-    //             competition_name: "Capture the Flag 2020",
-    //             is_active: false,
-    //             registration_deadline: "November 29th, 2020"
-    //         },
-    //         {
-    //             competition_id: 6,
-    //             competition_name: "Capture the Flag 2019",
-    //             is_active: false,
-    //             registration_deadline: "November 29th, 2019"
-    //         }
-    //     ]
-    // }
+    
     return (
         <Box
             className="p-8"
         >
             <Flex className="w-full" justifyContent="space-between" flexDirection={{base: "column", md:"row"}}>
                 <Heading>Competitions</Heading>
-                <Link href="/competitions/create">
+                <NextLink href="/competitions/create">
                     <Button colorScheme="green" className="mt-4 md:mt-0">Create competition</Button>
-                </Link>
+                </NextLink>
                 
             </Flex>
-
-            <SimpleGrid className="mt-4" spacing={4} columns={{sm: 1, md: 2, xl: 3}}>
-                {error && 
+            {error && 
                     <Alert status='error' className="mb-6">
                         <AlertIcon />
                         <AlertTitle>An error occurred!</AlertTitle>
                         <AlertDescription>{error.message}</AlertDescription>
                     </Alert>
                 }
+
+            <SimpleGrid className="mt-4" spacing={4} columns={{sm: 1, md: 2, xl: 3}}>
+                
                 {
                     isPending ? <div>loading</div>
                     
                     :
-                    data.competitions.map((competition) => {
+                    data?.competitions.map((competition) => {
                         return (
                             <Card variant="outline" key={competition.competition_id}>
                                 <CardHeader>
@@ -82,19 +41,26 @@ export default function CompetitionsPage(){
                                 <CardBody>
                                     <Text>Registration deadline: {competition.registration_deadline}</Text>
                                     <Text>Currently ongoing: {competition.is_active ? "Yes" : "No"}</Text>
+                                    <Text>Liability Release form:</Text> 
+                                    <Link href={competition.liability_release_form} color='teal.500' target="_blank">{competition.liability_release_form}</Link>
+                                </CardBody>
+                                {
+                                    competition.is_active &&
+                                    <CardFooter>
+                                        <NextLink href={`/competitions/update/${competition.competition_id}`}>
+                                            <Button colorScheme="blue">Edit</Button>
+                                        </NextLink>
+                                    </CardFooter>
+                                
+                                }
+                            </Card>
+                        );
+                    })
+                }
 
-                            </CardBody>
-                            {
-                                competition.is_active &&
-                                <CardFooter>
-                                    <Button colorScheme="blue">Edit</Button>
-                                </CardFooter>
-                            
-                            }
-                        </Card>
-                    );
-                })
-            }
+                {
+                    data?.competitions.length == 0 && <Text>No competitions created yet</Text>
+                }
             </SimpleGrid>
         </Box>
     );
