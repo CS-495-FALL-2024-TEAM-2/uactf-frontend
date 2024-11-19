@@ -85,7 +85,7 @@ export const useLogin = (
 } => {
     const login = async (request_body: LoginRequest) => {
         const response = await fetch(
-            `${BASE_API_URI}/auth/login`, 
+            `${BASE_API_URI}/auth/login`,
             {
                 method: 'POST',
                 headers: {
@@ -113,6 +113,42 @@ export const useLogin = (
     return {mutate: loginMutation.mutate, isPending: loginMutation.isPending};
 };
 
+export const useLogout = (
+    onSuccessFn?: ((data: any, variables: void, context: unknown) => Promise<unknown> | unknown) | undefined,
+    onErrorFn?: ((error: Error, variables: void, context: unknown) => Promise<unknown> | unknown) | undefined
+) : {
+    isPending: boolean
+    mutate: UseMutateFunction<any, Error, void, unknown>
+} => {
+    const logout = async () => {
+        const response = await fetch(
+            `${BASE_API_URI}/auth/logout`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Error logging out. Please try again');
+        }
+
+        return await response.json();
+    };
+
+    // mutation
+    const logoutMutation = useMutation({
+        mutationFn: logout,
+        onSuccess: onSuccessFn,
+        onError: onErrorFn,
+    });
+
+    return {mutate: logoutMutation.mutate, isPending: logoutMutation.isPending};
+}
+
 export const useForgotPassword = (
     onSuccessFn?: ((data: any, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined,
     onErrorFn?: ((error: Error, variables: string, context: unknown) => Promise<unknown> | unknown) | undefined
@@ -122,7 +158,7 @@ export const useForgotPassword = (
 } => {
     const forgotPassword = async (email_address: string) => {
         const response = await fetch(
-            `${BASE_API_URI}/auth/forgot/password`, 
+            `${BASE_API_URI}/auth/forgot/password`,
             {
                 method: 'POST',
                 headers: {

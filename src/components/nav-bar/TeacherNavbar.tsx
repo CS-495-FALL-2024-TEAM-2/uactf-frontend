@@ -3,56 +3,22 @@
 import {
   Box,
   Flex,
-  Avatar,
   Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useColorModeValue,
   Stack,
-  Center,
   IconButton,
   Link,
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import NavbarLogo from './NavbarLogo'
 import NavbarThemeMenuItem from './NavbarThemeMenuItem'
+import LogoutButton from './LogoutButton'
 
 export default function TeacherNavbar() {
-  const profileMenu = <Menu>
-  <MenuButton
-    as={Button}
-    rounded={'full'}
-    cursor={'pointer'}
-    minW={0}
-    size={'sm'}>
-    {/* TODO: Log In/Register when we have auth setup */}
-    My Profile
-  </MenuButton>
-  <MenuList alignItems={'center'}>
-    <br />
-    <Center>
-      <Avatar
-        size={'2xl'}
-        src={'https://avatars.dicebear.com/api/male/username.svg'}
-      />
-    </Center>
-    <br />
-    <Center>
-      <p>Username</p>
-    </Center>
-    <br />
-    <MenuDivider />
-    <MenuItem>Your Servers</MenuItem>
-    <MenuItem>Account Settings</MenuItem>
-    <MenuItem>Logout</MenuItem>
-  </MenuList>
-</Menu>;
-
-
-
   return (
     <>
       <Box bg={useColorModeValue('bama_gray', 'black')} px={4}>
@@ -61,9 +27,6 @@ export default function TeacherNavbar() {
           <NavbarLogo />
 
           <Box className='md:hidden'>
-            <div className='inline mr-4'>
-              {profileMenu}
-            </div>
             <div className='inline mr-4'>
             <NavbarThemeMenuItem />
             </div>
@@ -80,6 +43,9 @@ export default function TeacherNavbar() {
                     Teams
                   </Link>
                 </MenuItem>
+                <MenuItem>
+                  <LogoutButton />
+                </MenuItem>
               </MenuList>
             </Menu>
           </Box>
@@ -93,9 +59,8 @@ export default function TeacherNavbar() {
                     Teams
                   </Button>
                 </Link>
+                <LogoutButton />
                 <NavbarThemeMenuItem />
-
-                {profileMenu}
               </Stack>
             </Flex>
           </Box>
