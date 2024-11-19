@@ -51,6 +51,12 @@ export default function AdminNavbar() {
                 <MenuItem>
                   <Link href="/teachers">Teachers</Link>
                 </MenuItem>
+              
+                <MenuItem>
+                  <Link href="/approve-liability-release-form">
+                    Approve forms
+                  </Link>
+                </MenuItem>
                 <MenuItem>
                   <LogoutMenuItem />
                 </MenuItem>
